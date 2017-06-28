@@ -19,15 +19,37 @@ public class Universe {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
 
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+
+    public Cell initializeLivingCellAtPosition(int posX, int posY) {
+        Cell cell = null;
+        if(isOffUniverse(posX, posY)){
+            return cell;
+        }
+
+        cell = new Cell(posX, posY);
+        markAsAlive(cell);
+
+        return cell;
+    }
+
+    private boolean isOffUniverse(int posX, int posY) {
+        return isOffUniverseOnPosX(posX) || isOffUniverseOnPosY(posY);
+    }
+
+    private boolean isOffUniverseOnPosX(int posX) {
+        return posX > getWidth();
+    }
+
+    private boolean isOffUniverseOnPosY(int posY) {
+        return posY > getHeight();
+    }
+
+    private void markAsAlive(Cell cell) {
+        cell.setAlive(true);
     }
 }
