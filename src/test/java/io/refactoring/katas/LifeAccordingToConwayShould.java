@@ -10,7 +10,7 @@ public class LifeAccordingToConwayShould {
     private Universe universe;
 
     @Before
-    public void initialize_common_variables() throws Exception {
+    public void initialize_common_variables() {
         universe = Universe.startGame(4, 6);
     }
 
@@ -64,5 +64,5 @@ public class LifeAccordingToConwayShould {
         Cell cell = universe.initializeLivingCellAtPosition(2,10);
         assertThat(cell).isNull();
     }
-    
+
 }

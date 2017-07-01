@@ -33,7 +33,6 @@ public class Universe {
 
         cell = new Cell(posX, posY);
         markAsAlive(cell);
-
         return cell;
     }
 
