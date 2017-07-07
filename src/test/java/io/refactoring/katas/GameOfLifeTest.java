@@ -1,6 +1,8 @@
 package io.refactoring.katas;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -86,7 +88,7 @@ public class GameOfLifeTest {
 
         Cell firstCell = allCells.get(0);
 
-        assertThat(grid.countNeigbourhood(allCells, firstCell)).isEqualTo(0);
+        assertThat(grid.countNeighbourhood(allCells, firstCell)).isEqualTo(0);
     }
 
     @Test
@@ -95,7 +97,7 @@ public class GameOfLifeTest {
 
         List<Cell> allCells = grid.getCells();
         Cell firstCell = allCells.get(0);
-        assertThat(grid.countNeigbourhood(allCells, firstCell)).isEqualTo(1);
+        assertThat(grid.countNeighbourhood(allCells, firstCell)).isEqualTo(1);
     }
 
     @Test
@@ -105,7 +107,7 @@ public class GameOfLifeTest {
         List<Cell> allCells = grid.getCells();
         Cell firstCell = allCells.get(0);
 
-        assertThat(grid.countNeigbourhood(allCells, firstCell)).isEqualTo(1);
+        assertThat(grid.countNeighbourhood(allCells, firstCell)).isEqualTo(1);
     }
 
     @Test
@@ -116,7 +118,7 @@ public class GameOfLifeTest {
 
         Cell firstCell = allCells.get(0);
 
-        assertThat(grid.countNeigbourhood(allCells, firstCell)).isEqualTo(1);
+        assertThat(grid.countNeighbourhood(allCells, firstCell)).isEqualTo(1);
     }
 
     @Test
@@ -127,7 +129,7 @@ public class GameOfLifeTest {
 
         Cell firstCell = allCells.get(0);
 
-        assertThat(grid.countNeigbourhood(allCells, firstCell)).isEqualTo(1);
+        assertThat(grid.countNeighbourhood(allCells, firstCell)).isEqualTo(1);
     }
 
     @Test
@@ -138,7 +140,7 @@ public class GameOfLifeTest {
 
         Cell firstCell = allCells.get(0);
 
-        assertThat(grid.countNeigbourhood(allCells, firstCell)).isEqualTo(3);
+        assertThat(grid.countNeighbourhood(allCells, firstCell)).isEqualTo(3);
     }
 
     @Test
@@ -149,7 +151,7 @@ public class GameOfLifeTest {
 
         Cell secondCell = allCells.get(1);
 
-        assertThat(grid.countNeigbourhood(allCells, secondCell)).isEqualTo(3);
+        assertThat(grid.countNeighbourhood(allCells, secondCell)).isEqualTo(3);
     }
 
     @Test
@@ -160,7 +162,7 @@ public class GameOfLifeTest {
 
         Cell secondCell = allCells.get(1);
 
-        assertThat(grid.countNeigbourhood(allCells, secondCell)).isEqualTo(5);
+        assertThat(grid.countNeighbourhood(allCells, secondCell)).isEqualTo(5);
     }
 
     @Test
@@ -171,7 +173,7 @@ public class GameOfLifeTest {
 
         Cell secondCell = allCells.get(2);
 
-        assertThat(grid.countNeigbourhood(allCells, secondCell)).isEqualTo(3);
+        assertThat(grid.countNeighbourhood(allCells, secondCell)).isEqualTo(3);
     }
 
     @Test
@@ -182,7 +184,7 @@ public class GameOfLifeTest {
 
         Cell thirdCell = allCells.get(2);
 
-        assertThat(grid.countNeigbourhood(allCells, thirdCell)).isEqualTo(5);
+        assertThat(grid.countNeighbourhood(allCells, thirdCell)).isEqualTo(5);
     }
 
     @Test
@@ -194,7 +196,7 @@ public class GameOfLifeTest {
         Cell fifth = allCells.get(5);
 
 
-        assertThat(grid.countNeigbourhood(allCells, fifth)).isEqualTo(8);
+        assertThat(grid.countNeighbourhood(allCells, fifth)).isEqualTo(8);
     }
 
     @Test
@@ -205,25 +207,43 @@ public class GameOfLifeTest {
 
         Cell twelthieth = allCells.get(11);
 
+        assertThat(grid.countNeighbourhood(allCells, twelthieth)).isEqualTo(3);
+    }
 
-        assertThat(grid.countNeigbourhood(allCells, twelthieth)).isEqualTo(3);
+
+    @Test
+    public void should_mark_the_first_cell_as_alive_when_its_state_is_changed_to_ALIVE() {
+        grid = new Grid(1, 2);
+        Cell firstCell = grid.getCells().get(0);
+        firstCell.setState(CellState.ALIVE);
+
+        Assertions.assertThat(firstCell.isAlive()).isTrue();
     }
 
     @Test
-    public void should_contain_one_dead_cell_given_a_grid_of_1_x_1() {
-
+    public void should_return_no_neighboorhood_to_living_first_cell_when_the_second_cell_is_dead() {
+        //   1. Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
+        grid = new Grid(1, 2);
         List<Cell> cells = grid.getCells();
-        assertThat(cells.get(0).isAlive()).isFalse();
+        Cell firstCell = cells.get(0);
+
+        updateFirstCellAsAlive(firstCell);
+
+        assertThat(grid.countNeighbourhood(cells, firstCell)).isEqualTo(0);
+
     }
 
+    private void updateFirstCellAsAlive(Cell firstCell) {
+        firstCell.setState(CellState.ALIVE);
+    }
 
-//    @Test
+    //    @Test
 //    public void should_return_1_neighbour_when_counting_neigbours_of_a_cell_in_a_2x1_grid() {
 //        grid = new Grid(2, 1);
 //
 //        Cell firstCell = grid.getCells().get(0);
 //
-//        assertThat(grid.countNeigbourhood(firstCell)).isEqualTo(1);
+//        assertThat(grid.countNeighbourhood(firstCell)).isEqualTo(1);
 //    }
 //
 //    @Test
@@ -232,7 +252,7 @@ public class GameOfLifeTest {
 //
 //        Cell firstCell = grid.getCells().get(0);
 //
-//        assertThat(grid.countNeigbourhood(firstCell)).isEqualTo(2);
+//        assertThat(grid.countNeighbourhood(firstCell)).isEqualTo(2);
 //    }
 
 

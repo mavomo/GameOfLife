@@ -5,29 +5,30 @@ import java.util.Objects;
 public class Cell {
     private int posX;
     private int posY;
-    private boolean alive;
+    private CellState state;
 
     public Cell(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
     }
 
+    public void setState(CellState state) {
+        this.state = state;
+    }
+
     public int getPosX() {
         return posX;
     }
+
 
     public int getPosY() {
         return posY;
     }
 
-
     public boolean isAlive() {
-        return alive;
+        return this.state == CellState.ALIVE;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -36,7 +37,7 @@ public class Cell {
         Cell cell = (Cell) o;
         return posX == cell.posX &&
                 posY == cell.posY &&
-                alive == cell.alive;
+                state == cell.state;
     }
 
     @Override
