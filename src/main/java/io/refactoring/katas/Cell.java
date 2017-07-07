@@ -1,32 +1,25 @@
 package io.refactoring.katas;
 
+import java.util.Objects;
 
 public class Cell {
-
-    private int positionX;
-    private int positionY;
+    private int posX;
+    private int posY;
     private boolean alive;
 
-    public Cell(int positionX, int positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public Cell(int posX, int posY) {
+        this.posX = posX;
+        this.posY = posY;
     }
 
-    public int getPositionX() {
-        return positionX;
+    public int getPosX() {
+        return posX;
     }
 
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
+    public int getPosY() {
+        return posY;
     }
 
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-    }
 
     public boolean isAlive() {
         return alive;
@@ -34,5 +27,20 @@ public class Cell {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return posX == cell.posX &&
+                posY == cell.posY &&
+                alive == cell.alive;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(posX, posY);
     }
 }

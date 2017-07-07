@@ -4,11 +4,14 @@ public class Universe {
 
     private int width;
     private int height;
+    private int[][] board;
 
 
     public Universe(int width, int height) {
         this.width = width;
         this.height = height;
+        this.board = new int[width][height];
+
     }
 
     public static Universe startGame(int width, int height) {
@@ -25,15 +28,12 @@ public class Universe {
     }
 
 
-    public Cell initializeLivingCellAtPosition(int posX, int posY) {
-        Cell cell = null;
+    public void initializeLivingCellAtPosition(int posX, int posY) {
         if(isOffUniverse(posX, posY)){
-            return cell;
+            return;
         }
 
-        cell = new Cell(posX, posY);
-        markAsAlive(cell);
-        return cell;
+        this.board[posX][posY] = 1;
     }
 
     private boolean isOffUniverse(int posX, int posY) {
@@ -48,7 +48,8 @@ public class Universe {
         return posY > getHeight();
     }
 
-    private void markAsAlive(Cell cell) {
-        cell.setAlive(true);
+
+    public int[][] getBoard() {
+        return board;
     }
 }
