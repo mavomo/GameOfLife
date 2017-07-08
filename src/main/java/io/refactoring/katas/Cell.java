@@ -2,6 +2,8 @@ package io.refactoring.katas;
 
 import java.util.Objects;
 
+import static io.refactoring.katas.CellState.DEAD;
+
 public class Cell {
     private int posX;
     private int posY;
@@ -10,7 +12,7 @@ public class Cell {
     public Cell(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        state = CellState.DEAD;
+        state = DEAD;
     }
 
     public void setState(CellState state) {
@@ -27,9 +29,6 @@ public class Cell {
     }
 
 
-    public CellState getState() {
-        return state;
-    }
 
     public boolean isAlive() {
         return this.state.equals(CellState.ALIVE);

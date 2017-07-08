@@ -1,14 +1,8 @@
 package io.refactoring.katas;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameOfLife {
-
-    public static List<Cell> grid(int i, int i1) {
-        return new ArrayList<>();
-    }
-
 
     public static Grid computeNextGeneration(int posX, int posY, List<Cell> cells) {
         Grid gridToReturn = new Grid(posX, posY);
@@ -24,7 +18,13 @@ public class GameOfLife {
         }
 
         gridToReturn.setCells(cells);
-
         return gridToReturn;
+    }
+
+    public static Grid startGame(int height, int width) {
+        Grid grid = new Grid(height, width);
+        grid.initializeCells();
+
+        return grid;
     }
 }

@@ -11,9 +11,10 @@ public class Grid {
     public Grid(int i, int j) {
         this.height = i;
         this.width = j;
+        this.cells = new ArrayList<>();
     }
 
-    public List<Cell> initializeCells() {
+    public void initializeCells() {
         List<Cell> cells = new ArrayList<>();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
@@ -21,30 +22,15 @@ public class Grid {
                 cells.add(cellAtPosition);
             }
         }
-        return cells;
+        this.setCells(cells);
     }
-
 
     public void setCells(List<Cell> cells) {
         this.cells = cells;
     }
 
     public List<Cell> getCells() {
-        if(this.cells.isEmpty()){
-            this.cells = new ArrayList<>();
-        }
         return cells;
-    }
-
-    public void printCells() {
-        for (int i = 0; i < this.height; i++) {
-            for (int j = 0; j < this.width; j++) {
-                Cell currentCell = this.cells.get(j);
-                System.out.print(currentCell.isAlive() ? " 1 " : " * ");
-            }
-            System.out.println();
-        }
-
     }
 
     public int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
@@ -58,35 +44,45 @@ public class Grid {
         Cell cellInTheBottomRight = getCellInTheBottomRight(currentCell, cellInTheBottom);
 
         int totalNeighbors = 0;
-        for(Cell neighbor : allCells){
+        for (Cell neighbor : allCells) {
             if (bothCellsAreAlive(currentCell, neighbor) || !currentCell.isAlive() && neighbor.isAlive()) {
                 if (hasANeighbor(cellOfTheRight, neighbor)) {
                     totalNeighbors++;
                 }
-                if ( hasANeighbor(cellToTheLeft, neighbor)){
+                if (hasANeighbor(cellToTheLeft, neighbor)) {
                     totalNeighbors++;
                 }
-                if (hasANeighbor(cellToTheTop, neighbor)){
+                if (hasANeighbor(cellToTheTop, neighbor)) {
                     totalNeighbors++;
                 }
-                if (hasANeighbor(cellToTheTopRight, neighbor)){
+                if (hasANeighbor(cellToTheTopRight, neighbor)) {
                     totalNeighbors++;
                 }
-                if (hasANeighbor(cellToTheTopLeft, neighbor)){
+                if (hasANeighbor(cellToTheTopLeft, neighbor)) {
                     totalNeighbors++;
                 }
-                if (hasANeighbor(cellInTheBottom, neighbor)){
+                if (hasANeighbor(cellInTheBottom, neighbor)) {
                     totalNeighbors++;
                 }
-                if (hasANeighbor(cellInTheBottomLeft, neighbor)){
+                if (hasANeighbor(cellInTheBottomLeft, neighbor)) {
                     totalNeighbors++;
                 }
-                if (hasANeighbor(cellInTheBottomRight, neighbor)){
+                if (hasANeighbor(cellInTheBottomRight, neighbor)) {
                     totalNeighbors++;
                 }
             }
         }
         return totalNeighbors;
+    }
+
+
+    public int getHeight() {
+        return height;
+    }
+
+
+    public int getWidth() {
+        return width;
     }
 
     private boolean bothCellsAreAlive(Cell currentCell, Cell neighbor) {
