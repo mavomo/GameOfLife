@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GameOfLifeTest {
     private Grid grid;
 
+
     @Test
     public void should_create_a_grid_given_as_the_height_and_a_width_as_parameters() {
         grid = startGame(4, 8);
@@ -26,7 +27,7 @@ public class GameOfLifeTest {
         assertThat(grid.getCells()).isNotEmpty();
         assertThat(grid.getCells()).allMatch(c -> !c.isAlive());
     }
-    
+
     @Test
     public void should_die_by_underpopulation_when_a_live_cell_has_fewer_than_2_live_neighbors_in_a_2x2_grid() {
         grid = startGame(2, 2);

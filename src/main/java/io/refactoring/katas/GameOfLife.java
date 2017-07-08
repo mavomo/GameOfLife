@@ -23,7 +23,7 @@ public class GameOfLife {
 
     public static Grid startGame(int height, int width) {
         Grid grid = new Grid(height, width);
-        grid.initializeCells();
+        grid.initializeGridWithDeadCells();
 
         return grid;
     }

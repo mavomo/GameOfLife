@@ -17,7 +17,6 @@ public class GameOfLifeUtils {
             }
             System.out.println();
         }
-
     }
 
 

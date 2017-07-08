@@ -14,7 +14,7 @@ public class Grid {
         this.cells = new ArrayList<>();
     }
 
-    public void initializeCells() {
+    public void initializeGridWithDeadCells() {
         List<Cell> cells = new ArrayList<>();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {

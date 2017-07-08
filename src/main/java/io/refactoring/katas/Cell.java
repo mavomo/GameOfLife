@@ -29,7 +29,6 @@ public class Cell {
     }
 
 
-
     public boolean isAlive() {
         return this.state.equals(CellState.ALIVE);
     }
