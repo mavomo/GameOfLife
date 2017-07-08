@@ -10,6 +10,7 @@ public class Cell {
     public Cell(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
+        state = CellState.ALIVE;
     }
 
     public void setState(CellState state) {
@@ -25,6 +26,11 @@ public class Cell {
         return posY;
     }
 
+
+    public CellState getState() {
+        return state;
+    }
+
     public boolean isAlive() {
         return this.state == CellState.ALIVE;
     }
@@ -36,8 +42,7 @@ public class Cell {
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
         return posX == cell.posX &&
-                posY == cell.posY &&
-                state == cell.state;
+                posY == cell.posY;
     }
 
     @Override

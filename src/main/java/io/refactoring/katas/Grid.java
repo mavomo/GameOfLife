@@ -6,7 +6,7 @@ import java.util.List;
 public class Grid {
     private int height;
     private int width;
-
+    private List<Cell> cells;
 
     public Grid(int i, int j) {
         this.height = i;
@@ -17,22 +17,41 @@ public class Grid {
         List<Cell> cells = new ArrayList<>();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
-                System.out.print(" * ");
-                cells.add(getCellToTheRight(i, j));
+                Cell cellAtPosition = createCellAtPosition(i, j);
+                cells.add(cellAtPosition);
+            }
+        }
+        this.cells = cells;
+
+        return cells;
+    }
+
+
+    public void setCells(List<Cell> cells) {
+        this.cells = cells;
+    }
+
+    public void printCells() {
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                Cell currentCell = this.cells.get(j);
+                System.out.print(currentCell.isAlive() ? " 1 " : " * ");
             }
             System.out.println();
         }
 
-        return cells;
     }
 
     public int countNeighbourhood(List<Cell> allCells, final Cell cell) {
 
         int nbNeighbours = 0;
-        Cell cellOfTheRight = getCellToTheRight(cell.getPosX(), cell.getPosY() + 1);
+        Cell cellOfTheRight = createCellAtPosition(cell.getPosX(), cell.getPosY() + 1);
 
-        if (hasARightNeighbour(allCells, cell, cellOfTheRight) && cellOfTheRight.isAlive()) {
-            nbNeighbours++;
+        for(Cell c : allCells){
+            if ( c.getPosX() == cellOfTheRight.getPosX() && c.getPosY() == cellOfTheRight.getPosY() && c.isAlive()){
+                   nbNeighbours++;
+
+            }
         }
 
         if (hasANeighbourToTheLeft(allCells, cell, cell.getPosY() - 1)) {
@@ -57,7 +76,7 @@ public class Grid {
           nbNeighbours++;
         }
 
-        Cell cellInTheBottomLeft = getCellToTheRight(cellInTheBottom.getPosX(), cell.getPosY() + 1);
+        Cell cellInTheBottomLeft = createCellAtPosition(cellInTheBottom.getPosX(), cell.getPosY() + 1);
         if (hasANeighbour(allCells, cellInTheBottomLeft)) {
             nbNeighbours++;
         }
@@ -70,11 +89,11 @@ public class Grid {
     }
 
     private Cell getCellInTheBottomRight(Cell cell, Cell cellInTheBottom) {
-        return getCellToTheRight(cellInTheBottom.getPosX(), cell.getPosY() - 1);
+        return createCellAtPosition(cellInTheBottom.getPosX(), cell.getPosY() - 1);
     }
 
     private Cell getCellInTheBottom(int posX, int posY) {
-        return getCellToTheRight(posX, posY);
+        return createCellAtPosition(posX, posY);
     }
 
     private boolean hasATopLeftNeighboor(List<Cell> allCells, Cell cell, Cell cellToTheTop) {
@@ -83,29 +102,25 @@ public class Grid {
         return hasANeighbour(allCells, cellToTheTopLeft);
     }
 
-    private boolean hasATopRightNeighboor(List<Cell> allCells, Cell currentCell, Cell cellToTheTop) {
-        Cell cellToTheTopRight = getCellToTheRight(cellToTheTop.getPosX(), currentCell.getPosY() + 1);
+    private boolean hasATopRightNeighboor(List<Cell> allCells, Cell cell, Cell cellToTheTop) {
+        Cell cellToTheTopRight = createCellAtPosition(cellToTheTop.getPosX(), cell.getPosY() + 1);
 
         return hasANeighbour(allCells, cellToTheTopRight);
     }
 
     private Cell getCellAbove(Cell cell) {
-        return getCellToTheRight(cell.getPosX() - 1, cell.getPosY());
+        return createCellAtPosition(cell.getPosX() - 1, cell.getPosY());
     }
 
     private boolean hasANeighbourToTheLeft(List<Cell> allCells, Cell cell, int posY) {
-        Cell cellToTheLeft = getCellToTheRight(cell.getPosX(), posY);
+        Cell cellToTheLeft = createCellAtPosition(cell.getPosX(), posY);
 
         return hasANeighbour(allCells, cellToTheLeft);
     }
 
-    private boolean hasARightNeighbour(List<Cell> allCells, Cell cell, Cell cellOfTheRight) {
+    private boolean hasARightNeighbour(List<Cell> allCells, Cell cellOfTheRight) {
 
         return hasANeighbour(allCells, cellOfTheRight);
-    }
-
-    private Cell getCellToTheRight(int posX, int posY) {
-        return createCellAtPosition(posX, posY);
     }
 
     private Cell createCellAtPosition(int posX, int posY) {

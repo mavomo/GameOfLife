@@ -51,11 +51,10 @@ public class GameOfLifeTest {
     }
 
     @Test
-    public void should_contain_only_dead_cells_given_a_grid_of_1_x_2() {
+    public void should_contain_only_living_cells_given_a_grid_of_1_x_2() {
         grid = new Grid(1, 2);
         List<Cell> cells = grid.getCells();
-
-        assertThat(cells).allMatch(c -> !c.isAlive());
+        assertThat(cells).allMatch(c -> c.isAlive());
     }
 
     @Test
@@ -92,7 +91,7 @@ public class GameOfLifeTest {
     }
 
     @Test
-    public void should_return_only_1_neighbour_to_the_right_when_counting_the_neighbours_of_the_first_cell_in_a_1x2_grid() {
+    public void should_return_only_1_living_neighbour_to_the_right_when_counting_the_neighbours_of_the_first_cell_in_a_1x2_grid() {
         grid = new Grid(1, 2);
 
         List<Cell> allCells = grid.getCells();
@@ -105,6 +104,7 @@ public class GameOfLifeTest {
         grid = new Grid(1, 4);
 
         List<Cell> allCells = grid.getCells();
+
         Cell firstCell = allCells.get(0);
 
         assertThat(grid.countNeighbourhood(allCells, firstCell)).isEqualTo(1);
@@ -210,7 +210,6 @@ public class GameOfLifeTest {
         assertThat(grid.countNeighbourhood(allCells, twelthieth)).isEqualTo(3);
     }
 
-
     @Test
     public void should_mark_the_first_cell_as_alive_when_its_state_is_changed_to_ALIVE() {
         grid = new Grid(1, 2);
@@ -221,24 +220,29 @@ public class GameOfLifeTest {
     }
 
     @Test
-    public void should_return_no_neighboorhood_to_living_first_cell_when_the_second_cell_is_dead() {
+    public void should_return_no_neighboorhood_to_right_first_cell_when_the_second_cell_is_dead_in_a_1x2_grid() {
         //   1. Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
         grid = new Grid(1, 2);
         List<Cell> cells = grid.getCells();
         Cell firstCell = cells.get(0);
+        Cell secondCell = cells.get(1);
 
-        updateFirstCellAsAlive(firstCell);
+        secondCell.setState(CellState.DEAD);
+        grid.setCells(cells);
+        grid.printCells();
+
 
         assertThat(grid.countNeighbourhood(cells, firstCell)).isEqualTo(0);
 
     }
 
-    private void updateFirstCellAsAlive(Cell firstCell) {
-        firstCell.setState(CellState.ALIVE);
-    }
+
+//
+//    private void markAllCellsAsAlive(List<Cell> allCells) {
+//        allCells.stream().forEach(c -> c.setState(CellState.ALIVE));
+//    }
 
     //    @Test
-//    public void should_return_1_neighbour_when_counting_neigbours_of_a_cell_in_a_2x1_grid() {
 //        grid = new Grid(2, 1);
 //
 //        Cell firstCell = grid.getCells().get(0);
