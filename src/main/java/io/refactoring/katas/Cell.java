@@ -10,7 +10,7 @@ public class Cell {
     public Cell(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        state = CellState.ALIVE;
+        state = CellState.DEAD;
     }
 
     public void setState(CellState state) {

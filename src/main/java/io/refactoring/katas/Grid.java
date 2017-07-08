@@ -42,15 +42,15 @@ public class Grid {
 
     }
 
-    public int countNeighbourhood(List<Cell> allCells, final Cell cell) {
+    public int countLivingNeighbours(List<Cell> allCells, final Cell cell) {
 
         int nbNeighbours = 0;
         Cell cellOfTheRight = createCellAtPosition(cell.getPosX(), cell.getPosY() + 1);
 
         for(Cell c : allCells){
-            if ( c.getPosX() == cellOfTheRight.getPosX() && c.getPosY() == cellOfTheRight.getPosY() && c.isAlive()){
+            boolean hasRightNeighboor = c.getPosX() == cellOfTheRight.getPosX() && c.getPosY() == cellOfTheRight.getPosY();
+            if (hasRightNeighboor && c.isAlive()){
                    nbNeighbours++;
-
             }
         }
 
