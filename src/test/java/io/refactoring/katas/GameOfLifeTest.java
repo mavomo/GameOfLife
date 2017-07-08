@@ -100,18 +100,14 @@ public class GameOfLifeTest {
         assertThat(grid.countLivingNeighbours(allCells, firstCell)).isEqualTo(1);
     }
 
-    private void setAllNeighborhoodAsAlive(List<Cell> allCells) {
-        allCells.stream().forEach(c -> c.setState(CellState.ALIVE));
-    }
-
     @Test
-    public void should_return_only_1_neighbour_to_the_right_when_counting_neighbours_of_the_first_cell_in_a_1x4_grid() {
+    public void should_return_only_1_living_neighbour_to_the_right_when_counting_neighbours_of_the_living_first_cell_in_a_1x4_grid() {
         grid = new Grid(1, 4);
 
         List<Cell> allCells = grid.getCells();
 
         Cell firstCell = allCells.get(0);
-
+        allCells.get(0).setState(CellState.ALIVE);
         allCells.get(1).setState(CellState.ALIVE);
         assertThat(grid.countLivingNeighbours(allCells, firstCell)).isEqualTo(1);
     }
@@ -151,12 +147,13 @@ public class GameOfLifeTest {
     }
 
     @Test
-    public void should_return_3_neighbours_when_counting_the_neighbours_of_the_second_cell_in_a_2x2_grid() {
+    public void should_return_3_living_neighbours_when_counting_the_neighbours_of_the_second_living_cell_in_a_2x2_grid() {
         grid = new Grid(2, 2);
 
         List<Cell> allCells = grid.getCells();
 
         Cell secondCell = allCells.get(1);
+        setAllNeighborhoodAsAlive(allCells);
 
         assertThat(grid.countLivingNeighbours(allCells, secondCell)).isEqualTo(3);
     }
@@ -213,12 +210,13 @@ public class GameOfLifeTest {
     }
 
     @Test
-    public void should_return_3_neighbours_when_counting_the_neighbours_of_the_last_cell_in_a_3x4_grid() {
+    public void should_return_3_living_neighbours_when_counting_the_neighbours_of_the_last_cell_in_a_3x4_grid() {
         grid = new Grid(3, 4);
 
         List<Cell> allCells = grid.getCells();
 
         Cell twelthieth = allCells.get(11);
+        setAllNeighborhoodAsAlive(allCells);
 
         assertThat(grid.countLivingNeighbours(allCells, twelthieth)).isEqualTo(3);
     }
@@ -233,7 +231,7 @@ public class GameOfLifeTest {
     }
 
     @Test
-    public void should_return_no_neighboorhood_to_right_first_cell_when_the_second_cell_is_dead_in_a_1x2_grid() {
+    public void should_return_no_neighboorhood_to_right_dead_first_cell_when_the_second_cell_is_dead_in_a_1x2_grid() {
         //   1. Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
         grid = new Grid(1, 2);
         List<Cell> cells = grid.getCells();
@@ -242,33 +240,38 @@ public class GameOfLifeTest {
         grid.setCells(cells);
         grid.printCells();
 
-
         assertThat(grid.countLivingNeighbours(cells, firstCell)).isEqualTo(0);
 
     }
 
-
 //
-//    private void markAllCellsAsAlive(List<Cell> allCells) {
-//        allCells.stream().forEach(c -> c.setState(CellState.ALIVE));
+
+
+    //    }
+//        assertThat(grid.countLivingNeighbours(firstCell)).isEqualTo(2);
+//
+//        Cell firstCell = grid.getCells().get(0);
+//
+//        grid = new Grid(3, 1);
+//    public void should_return_2_neighbour_when_counting_neigbours_of_a_cell_in_a_3x1_grid() {
+//    @Test
+//
 //    }
+//        assertThat(grid.countLivingNeighbours(firstCell)).isEqualTo(1);
+//
+//        Cell firstCell = grid.getCells().get(0);
+//
+//        grid = new Grid(2, 1);
+//    }
+//        allCells.stream().forEach(c -> c.setState(CellState.ALIVE));
+//    private void markAllCellsAsAlive(List<Cell> allCells) {
+
+    private void setAllNeighborhoodAsAlive(List<Cell> allCells) {
+
+        allCells.stream().forEach(c -> c.setState(CellState.ALIVE));
+    }
 
     //    @Test
-//        grid = new Grid(2, 1);
-//
-//        Cell firstCell = grid.getCells().get(0);
-//
-//        assertThat(grid.countLivingNeighbours(firstCell)).isEqualTo(1);
-//    }
-//
-//    @Test
-//    public void should_return_2_neighbour_when_counting_neigbours_of_a_cell_in_a_3x1_grid() {
-//        grid = new Grid(3, 1);
-//
-//        Cell firstCell = grid.getCells().get(0);
-//
-//        assertThat(grid.countLivingNeighbours(firstCell)).isEqualTo(2);
-//    }
 
 
     //    @Test

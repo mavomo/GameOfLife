@@ -42,51 +42,63 @@ public class Grid {
 
     }
 
-    public int countLivingNeighbours(List<Cell> allCells, final Cell cell) {
-
+    public int countLivingNeighbours(List<Cell> allCells, final Cell currentCell) {
         int nbNeighbours = 0;
-        Cell cellOfTheRight = createCellAtPosition(cell.getPosX(), cell.getPosY() + 1);
+        Cell cellOfTheRight = createCellAtPosition(currentCell.getPosX(), currentCell.getPosY() + 1);
+        Cell cellToTheLeft = createCellAtPosition(currentCell.getPosX(), currentCell.getPosY() - 1);
 
-        for(Cell c : allCells){
-            boolean hasRightNeighboor = c.getPosX() == cellOfTheRight.getPosX() && c.getPosY() == cellOfTheRight.getPosY();
-            if (hasRightNeighboor && c.isAlive()){
-                   nbNeighbours++;
+        for(Cell neighboor : allCells){
+            if (bothCellsAreAlive(currentCell, neighboor)) {
+                if (hasANeighbour(cellOfTheRight, neighboor)) {
+                    nbNeighbours++;
+                }
+                if ( hasANeighbour(cellToTheLeft, neighboor)){
+                    nbNeighbours++;
+                }
             }
+
         }
 
-        if (hasANeighbourToTheLeft(allCells, cell, cell.getPosY() - 1)) {
+
+        Cell cellToTheTop = getCellAbove(currentCell);
+        if (allCells.contains(cellToTheTop)) {
             nbNeighbours++;
         }
 
-        Cell cellToTheTop = getCellAbove(cell);
-        if (hasANeighbour(allCells, cellToTheTop)) {
+        if (hasATopRightNeighboor(allCells, currentCell, cellToTheTop)) {
             nbNeighbours++;
         }
 
-        if (hasATopRightNeighboor(allCells, cell, cellToTheTop)) {
+        if (hasATopLeftNeighboor(allCells, currentCell, cellToTheTop)) {
             nbNeighbours++;
         }
 
-        if (hasATopLeftNeighboor(allCells, cell, cellToTheTop)) {
-            nbNeighbours++;
-        }
-
-        Cell cellInTheBottom = getCellInTheBottom(cell.getPosX() + 1, cell.getPosY());
-        if (hasANeighbour(allCells, cellInTheBottom)) {
+        Cell cellInTheBottom = getCellInTheBottom(currentCell.getPosX() + 1, currentCell.getPosY());
+        if (allCells.contains(cellInTheBottom)) {
           nbNeighbours++;
         }
 
-        Cell cellInTheBottomLeft = createCellAtPosition(cellInTheBottom.getPosX(), cell.getPosY() + 1);
-        if (hasANeighbour(allCells, cellInTheBottomLeft)) {
+        Cell cellInTheBottomLeft = createCellAtPosition(cellInTheBottom.getPosX(), currentCell.getPosY() + 1);
+        if (allCells.contains(cellInTheBottomLeft)) {
             nbNeighbours++;
         }
 
-        if (hasANeighbour(allCells, getCellInTheBottomRight(cell, cellInTheBottom))) {
+        if (allCells.contains(getCellInTheBottomRight(currentCell, cellInTheBottom))) {
             nbNeighbours++;
         }
 
         return nbNeighbours;
     }
+
+    private boolean bothCellsAreAlive(Cell currentCell, Cell neighboor) {
+        return neighboor.isAlive() && currentCell.isAlive();
+    }
+
+    private boolean hasANeighbour(Cell cellToTheLeft, Cell neighboor) {
+        return neighboor.getPosX() == cellToTheLeft.getPosX()
+                && neighboor.getPosY() == cellToTheLeft.getPosY();
+    }
+
 
     private Cell getCellInTheBottomRight(Cell cell, Cell cellInTheBottom) {
         return createCellAtPosition(cellInTheBottom.getPosX(), cell.getPosY() - 1);
@@ -99,36 +111,26 @@ public class Grid {
     private boolean hasATopLeftNeighboor(List<Cell> allCells, Cell cell, Cell cellToTheTop) {
         Cell cellToTheTopLeft = getCellInTheBottomRight(cell, cellToTheTop);
 
-        return hasANeighbour(allCells, cellToTheTopLeft);
+        return allCells.contains(cellToTheTopLeft);
     }
 
     private boolean hasATopRightNeighboor(List<Cell> allCells, Cell cell, Cell cellToTheTop) {
         Cell cellToTheTopRight = createCellAtPosition(cellToTheTop.getPosX(), cell.getPosY() + 1);
 
-        return hasANeighbour(allCells, cellToTheTopRight);
+        return allCells.contains(cellToTheTopRight);
     }
 
     private Cell getCellAbove(Cell cell) {
         return createCellAtPosition(cell.getPosX() - 1, cell.getPosY());
     }
 
-    private boolean hasANeighbourToTheLeft(List<Cell> allCells, Cell cell, int posY) {
-        Cell cellToTheLeft = createCellAtPosition(cell.getPosX(), posY);
-
-        return hasANeighbour(allCells, cellToTheLeft);
-    }
-
     private boolean hasARightNeighbour(List<Cell> allCells, Cell cellOfTheRight) {
 
-        return hasANeighbour(allCells, cellOfTheRight);
+        return allCells.contains(cellOfTheRight);
     }
 
     private Cell createCellAtPosition(int posX, int posY) {
         return new Cell(posX, posY);
-    }
-
-    private boolean hasANeighbour(List<Cell> allCells, Cell cellOfTheRight) {
-        return allCells.contains(cellOfTheRight);
     }
 
 }
