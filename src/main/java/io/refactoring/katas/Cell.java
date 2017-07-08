@@ -32,7 +32,7 @@ public class Cell {
     }
 
     public boolean isAlive() {
-        return this.state == CellState.ALIVE;
+        return this.state.equals(CellState.ALIVE);
     }
 
 
