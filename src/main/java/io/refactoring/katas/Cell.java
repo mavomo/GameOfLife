@@ -5,31 +5,30 @@ import java.util.Objects;
 import static io.refactoring.katas.CellState.DEAD;
 
 public class Cell {
-    private int posX;
-    private int posY;
+    private int positionX;
+    private int positionY;
     private CellState state;
 
-    public Cell(int posX, int posY) {
-        this.posX = posX;
-        this.posY = posY;
+    Cell(int positionX, int positionY) {
+        this.positionX = positionX;
+        this.positionY = positionY;
         state = DEAD;
     }
 
-    public void setState(CellState state) {
+    void setState(CellState state) {
         this.state = state;
     }
 
-    public int getPosX() {
-        return posX;
+    int getPositionX() {
+        return positionX;
+    }
+
+    int getPositionY() {
+        return positionY;
     }
 
 
-    public int getPosY() {
-        return posY;
-    }
-
-
-    public boolean isAlive() {
+    boolean isAlive() {
         return this.state.equals(CellState.ALIVE);
     }
 
@@ -39,12 +38,12 @@ public class Cell {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
-        return posX == cell.posX &&
-                posY == cell.posY;
+        return positionX == cell.positionX &&
+                positionY == cell.positionY;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(posX, posY);
+        return Objects.hash(positionX, positionY);
     }
 }

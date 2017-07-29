@@ -4,17 +4,136 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grid {
+
     private int height;
     private int width;
     private List<Cell> cells;
 
-    public Grid(int i, int j) {
-        this.height = i;
-        this.width = j;
+    private Grid(int height, int width) {
+        this.height = height;
+        this.width = width;
         this.cells = new ArrayList<>();
     }
 
-    public void initializeGridWithDeadCells() {
+    static Grid startGame(int height, int width) {
+        Grid grid = new Grid(height, width);
+        grid.initializeGridWithDeadCells();
+
+        return grid;
+    }
+
+    Grid computeNextGeneration(int width, int height) {
+        Grid gridToReturn = new Grid(width, height);
+
+        for (Cell currentCell : cells) {
+            int totalOfNeighbors = gridToReturn.countLivingNeighbors(cells, currentCell);
+            if (totalOfNeighbors < 2 || totalOfNeighbors > 3) {
+                currentCell.setState(CellState.DEAD);
+            }
+            if (!currentCell.isAlive() && totalOfNeighbors == 3) {
+                currentCell.setState(CellState.ALIVE);
+            }
+        }
+
+        gridToReturn.setCells(cells);
+        return gridToReturn;
+    }
+
+    void setAllNeighborhoodAsAlive() {
+        cells.stream().forEach(c -> c.setState(CellState.ALIVE));
+    }
+
+    int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
+        Cell[] cells = getNeighborsOf(currentCell);
+
+        int totalNeighbors = 0;
+        for (Cell neighbor : allCells) {
+            if (bothCellsAreAlive(currentCell, neighbor) || !currentCell.isAlive() && neighbor.isAlive()) {
+                for (Cell cell : cells) {
+                    if (hasANeighbor(cell, neighbor)) {
+                        totalNeighbors++;
+                    }
+                }
+            }
+        }
+        return totalNeighbors;
+    }
+
+    int getTotalCells() {
+        return getCells().size();
+    }
+
+    int getHeight() {
+        return height;
+    }
+
+    int getWidth() {
+        return width;
+    }
+
+    Cell getCellAtPosition(int index) {
+        return cells.get(index);
+    }
+
+    void printCells() {
+        for (int i = 0; i < this.getHeight(); i++) {
+            for (int j = 0; j < this.getWidth(); j++) {
+                Cell currentCell = this.getCells().get(j);
+                System.out.print(currentCell.isAlive() ? " 1 " : " * ");
+            }
+            System.out.println();
+        }
+    }
+
+    List<Cell> getCells() {
+        return cells;
+    }
+
+    void setAsAlive(int cellIndex) {
+        Cell cell = this.getCellAtPosition(cellIndex);
+
+        cell.setState(CellState.ALIVE);
+    }
+
+    void setAsDead(int cellIndex) {
+        Cell cell = this.getCellAtPosition(cellIndex);
+        cell.setState(CellState.DEAD);
+
+    }
+
+    private Cell[] getNeighborsOf(Cell currentCell) {
+
+        int currentX = currentCell.getPositionX();
+        int currentY = currentCell.getPositionY();
+
+        Cell cellOfTheRight = createCellAtPosition(currentX, currentY + 1);
+        Cell cellToTheLeft = createCellAtPosition(currentX, currentY - 1);
+        Cell cellToTheTop = createCellAtPosition(currentX - 1, currentY);
+        Cell cellInTheBottom = createCellAtPosition(currentX + 1, currentY);
+
+        Cell cellToTheTopRight = createCellAtPosition(cellToTheTop.getPositionX(), currentY + 1);
+        Cell cellToTheTopLeft = createCellAtPosition(cellToTheTop.getPositionX(), currentY - 1);
+
+        Cell cellInTheBottomRight = createCellAtPosition(cellInTheBottom.getPositionX(), currentY - 1);
+        Cell cellInTheBottomLeft = createCellAtPosition(cellInTheBottom.getPositionX(), currentY + 1);
+
+        return new Cell[]{
+                cellOfTheRight,
+                cellToTheLeft,
+                cellToTheTop,
+                cellToTheTopRight,
+                cellToTheTopLeft,
+                cellInTheBottom,
+                cellInTheBottomLeft,
+                cellInTheBottomRight
+        };
+    }
+
+    private void setCells(List<Cell> cells) {
+        this.cells = cells;
+    }
+
+    private void initializeGridWithDeadCells() {
         List<Cell> cells = new ArrayList<>();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
@@ -25,91 +144,16 @@ public class Grid {
         this.setCells(cells);
     }
 
-    public void setCells(List<Cell> cells) {
-        this.cells = cells;
-    }
-
-    public List<Cell> getCells() {
-        return cells;
-    }
-
-    public int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
-        Cell cellOfTheRight = createCellAtPosition(currentCell.getPosX(), currentCell.getPosY() + 1);
-        Cell cellToTheLeft = createCellAtPosition(currentCell.getPosX(), currentCell.getPosY() - 1);
-        Cell cellToTheTop = getCellAbove(currentCell);
-        Cell cellToTheTopRight = createCellAtPosition(cellToTheTop.getPosX(), currentCell.getPosY() + 1);
-        Cell cellToTheTopLeft = getCellInTheBottomRight(currentCell, cellToTheTop);
-        Cell cellInTheBottom = getCellInTheBottom(currentCell.getPosX() + 1, currentCell.getPosY());
-        Cell cellInTheBottomLeft = createCellAtPosition(cellInTheBottom.getPosX(), currentCell.getPosY() + 1);
-        Cell cellInTheBottomRight = getCellInTheBottomRight(currentCell, cellInTheBottom);
-
-        int totalNeighbors = 0;
-        for (Cell neighbor : allCells) {
-            if (bothCellsAreAlive(currentCell, neighbor) || !currentCell.isAlive() && neighbor.isAlive()) {
-                if (hasANeighbor(cellOfTheRight, neighbor)) {
-                    totalNeighbors++;
-                }
-                if (hasANeighbor(cellToTheLeft, neighbor)) {
-                    totalNeighbors++;
-                }
-                if (hasANeighbor(cellToTheTop, neighbor)) {
-                    totalNeighbors++;
-                }
-                if (hasANeighbor(cellToTheTopRight, neighbor)) {
-                    totalNeighbors++;
-                }
-                if (hasANeighbor(cellToTheTopLeft, neighbor)) {
-                    totalNeighbors++;
-                }
-                if (hasANeighbor(cellInTheBottom, neighbor)) {
-                    totalNeighbors++;
-                }
-                if (hasANeighbor(cellInTheBottomLeft, neighbor)) {
-                    totalNeighbors++;
-                }
-                if (hasANeighbor(cellInTheBottomRight, neighbor)) {
-                    totalNeighbors++;
-                }
-            }
-        }
-        return totalNeighbors;
-    }
-
-
-    public int getHeight() {
-        return height;
-    }
-
-
-    public int getWidth() {
-        return width;
-    }
-
     private boolean bothCellsAreAlive(Cell currentCell, Cell neighbor) {
         return neighbor.isAlive() && currentCell.isAlive();
     }
 
     private boolean hasANeighbor(Cell cellToTheLeft, Cell neighbor) {
-        return neighbor.getPosX() == cellToTheLeft.getPosX()
-                && neighbor.getPosY() == cellToTheLeft.getPosY();
-    }
-
-
-    private Cell getCellInTheBottomRight(Cell cell, Cell cellInTheBottom) {
-        return createCellAtPosition(cellInTheBottom.getPosX(), cell.getPosY() - 1);
-    }
-
-    private Cell getCellInTheBottom(int posX, int posY) {
-        return createCellAtPosition(posX, posY);
-    }
-
-
-    private Cell getCellAbove(Cell cell) {
-        return createCellAtPosition(cell.getPosX() - 1, cell.getPosY());
+        return neighbor.getPositionX() == cellToTheLeft.getPositionX()
+                && neighbor.getPositionY() == cellToTheLeft.getPositionY();
     }
 
     private Cell createCellAtPosition(int posX, int posY) {
         return new Cell(posX, posY);
     }
-
 }

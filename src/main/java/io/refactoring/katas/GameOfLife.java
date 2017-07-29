@@ -1,11 +1,9 @@
 package io.refactoring.katas;
 
-import java.util.List;
-
 public class GameOfLife {
 
-    public static Grid computeNextGeneration(int posX, int posY, List<Cell> cells) {
-        Grid gridToReturn = new Grid(posX, posY);
+  /*  public static Grid computeNextGeneration(int width, int height, List<Cell> cells) {
+        Grid gridToReturn = new Grid(width, height);
 
         for(Cell currentCell : cells){
             int totalOfNeighbors = gridToReturn.countLivingNeighbors(cells, currentCell);
@@ -19,12 +17,12 @@ public class GameOfLife {
 
         gridToReturn.setCells(cells);
         return gridToReturn;
-    }
+    }*/
 
-    public static Grid startGame(int height, int width) {
+    /*public static Grid startGame(int height, int width) {
         Grid grid = new Grid(height, width);
         grid.initializeGridWithDeadCells();
 
         return grid;
-    }
+    }*/
 }
