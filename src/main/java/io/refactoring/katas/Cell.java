@@ -27,11 +27,23 @@ public class Cell {
         return positionY;
     }
 
+    private void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
+    private void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
+
+    void setLocation(int positionX, int positionY) {
+        this.setPositionX(positionX);
+        this.setPositionY(positionY);
+    }
+
 
     boolean isAlive() {
         return this.state.equals(CellState.ALIVE);
     }
-
 
     @Override
     public boolean equals(Object o) {

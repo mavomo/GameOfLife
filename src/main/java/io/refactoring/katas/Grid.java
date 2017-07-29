@@ -9,12 +9,12 @@ public class Grid {
     public static final int THREE = 3;
     private int height;
     private int width;
-    private List<Cell> cells;
+    private List<Cell> initialCells;
 
     private Grid(int height, int width) {
         this.height = height;
         this.width = width;
-        this.cells = new ArrayList<>();
+        this.initialCells = new ArrayList<>();
     }
 
     static Grid startGame(int height, int width) {
@@ -26,9 +26,11 @@ public class Grid {
 
     Grid computeNextGeneration(int width, int height) {
         Grid gridToReturn = new Grid(width, height);
+        List<Cell> newCells = initialCells;
 
-        for (Cell currentCell : cells) {
-            int totalOfNeighbors = gridToReturn.countLivingNeighbors(cells, currentCell);
+        for (Cell currentCell : newCells) {
+            int totalOfNeighbors = gridToReturn.countLivingNeighbors(newCells, currentCell);
+
             if (isUnderpopulated(totalOfNeighbors) || isOvercrowded(totalOfNeighbors)) {
                 currentCell.setState(CellState.DEAD);
             }
@@ -37,25 +39,16 @@ public class Grid {
             }
         }
 
-        gridToReturn.setCells(cells);
+        gridToReturn.setInitialCells(newCells);
         return gridToReturn;
     }
 
-    private boolean isOvercrowded(int totalOfNeighbors) {
-        return totalOfNeighbors > THREE;
-    }
-
-    private boolean isUnderpopulated(int totalOfNeighbors) {
-        return totalOfNeighbors < TWO;
-    }
-
     void setAllNeighborhoodAsAlive() {
-        cells.stream().forEach(c -> c.setState(CellState.ALIVE));
+        initialCells.stream().forEach(c -> c.setState(CellState.ALIVE));
     }
 
     int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
         Cell[] cells = getNeighborsOf(currentCell);
-
         int totalNeighbors = 0;
         for (Cell neighbor : allCells) {
             if (bothCellsAreAlive(currentCell, neighbor) || !currentCell.isAlive() && neighbor.isAlive()) {
@@ -70,7 +63,7 @@ public class Grid {
     }
 
     int getTotalCells() {
-        return getCells().size();
+        return getInitialCells().size();
     }
 
     int getHeight() {
@@ -82,21 +75,11 @@ public class Grid {
     }
 
     Cell getCellAtPosition(int index) {
-        return cells.get(index);
+        return initialCells.get(index);
     }
 
-    void printCells() {
-        for (int i = 0; i < this.getHeight(); i++) {
-            for (int j = 0; j < this.getWidth(); j++) {
-                Cell currentCell = this.getCells().get(j);
-                System.out.print(currentCell.isAlive() ? " 1 " : " * ");
-            }
-            System.out.println();
-        }
-    }
-
-    List<Cell> getCells() {
-        return cells;
+    List<Cell> getInitialCells() {
+        return initialCells;
     }
 
     void setAsDead(int cellIndex) {
@@ -105,21 +88,23 @@ public class Grid {
 
     }
 
+    private boolean isOvercrowded(int totalOfNeighbors) {
+        return totalOfNeighbors > THREE;
+    }
+
+    private boolean isUnderpopulated(int totalOfNeighbors) {
+        return totalOfNeighbors < TWO;
+    }
+
     private Cell[] getNeighborsOf(Cell currentCell) {
-
-        int currentX = currentCell.getPositionX();
-        int currentY = currentCell.getPositionY();
-
-        Cell cellOfTheRight = createCellAtPosition(currentX, currentY + 1);
-        Cell cellToTheLeft = createCellAtPosition(currentX, currentY - 1);
-        Cell cellToTheTop = createCellAtPosition(currentX - 1, currentY);
-        Cell cellInTheBottom = createCellAtPosition(currentX + 1, currentY);
-
-        Cell cellToTheTopRight = createCellAtPosition(cellToTheTop.getPositionX(), currentY + 1);
-        Cell cellToTheTopLeft = createCellAtPosition(cellToTheTop.getPositionX(), currentY - 1);
-
-        Cell cellInTheBottomRight = createCellAtPosition(cellInTheBottom.getPositionX(), currentY - 1);
-        Cell cellInTheBottomLeft = createCellAtPosition(cellInTheBottom.getPositionX(), currentY + 1);
+        Cell cellOfTheRight = getNeighborhood(currentCell, Neighbor.RIGHT);
+        Cell cellToTheLeft = getNeighborhood(currentCell, Neighbor.LEFT);
+        Cell cellToTheTop = getNeighborhood(currentCell, Neighbor.TOP);
+        Cell cellInTheBottom = getNeighborhood(currentCell, Neighbor.BOTTOM);
+        Cell cellToTheTopRight = getNeighborhood(cellToTheTop, Neighbor.TOP_RIGHT);
+        Cell cellToTheTopLeft = getNeighborhood(cellToTheTop, Neighbor.TOP_LEFT);
+        Cell cellInTheBottomRight = getNeighborhood(cellInTheBottom, Neighbor.BOTTOM_RIGHT);
+        Cell cellInTheBottomLeft = getNeighborhood(cellInTheBottom, Neighbor.BOTTOM_LEFT);
 
         return new Cell[]{
                 cellOfTheRight,
@@ -133,8 +118,29 @@ public class Grid {
         };
     }
 
-    private void setCells(List<Cell> cells) {
-        this.cells = cells;
+    private Cell getNeighborhood(Cell currentCell, Neighbor neighborLocation) {
+        Cell cell = new Cell(currentCell.getPositionX(), currentCell.getPositionY());
+        if (neighborLocation == Neighbor.RIGHT)
+            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() + 1);
+        if (neighborLocation == Neighbor.LEFT)
+            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() - 1);
+        if (neighborLocation == Neighbor.TOP)
+            cell.setLocation(currentCell.getPositionX() - 1, currentCell.getPositionY());
+        if (neighborLocation == Neighbor.BOTTOM)
+            cell.setLocation(currentCell.getPositionX() + 1, currentCell.getPositionY());
+        if (neighborLocation == Neighbor.TOP_RIGHT)
+            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() + 1);
+        if (neighborLocation == Neighbor.TOP_LEFT)
+            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() - 1);
+        if (neighborLocation == Neighbor.BOTTOM_RIGHT)
+            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() - 1);
+        if (neighborLocation == Neighbor.BOTTOM_LEFT)
+            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() + 1);
+        return cell;
+    }
+
+    private void setInitialCells(List<Cell> initialCells) {
+        this.initialCells = initialCells;
     }
 
     private void initializeGridWithDeadCells() {
@@ -145,7 +151,7 @@ public class Grid {
                 cells.add(cellAtPosition);
             }
         }
-        this.setCells(cells);
+        this.setInitialCells(cells);
     }
 
     private boolean bothCellsAreAlive(Cell currentCell, Cell neighbor) {
@@ -161,9 +167,9 @@ public class Grid {
         return new Cell(posX, posY);
     }
 
-    public void setCellsAsAlive(int... cellIndexes) {
-        for (int i = 0; i < cellIndexes.length; i++) {
-            this.setACellAsAlive(cellIndexes[i]);
+    void setCellsAsAlive(int... cellIndexes) {
+        for (int cellIndexe : cellIndexes) {
+            this.setACellAsAlive(cellIndexe);
         }
     }
 
