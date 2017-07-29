@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Grid {
 
+    public static final int TWO = 2;
+    public static final int THREE = 3;
     private int height;
     private int width;
     private List<Cell> cells;
@@ -27,16 +29,24 @@ public class Grid {
 
         for (Cell currentCell : cells) {
             int totalOfNeighbors = gridToReturn.countLivingNeighbors(cells, currentCell);
-            if (totalOfNeighbors < 2 || totalOfNeighbors > 3) {
+            if (isUnderpopulated(totalOfNeighbors) || isOvercrowded(totalOfNeighbors)) {
                 currentCell.setState(CellState.DEAD);
             }
-            if (!currentCell.isAlive() && totalOfNeighbors == 3) {
+            if (!currentCell.isAlive() && totalOfNeighbors == THREE) {
                 currentCell.setState(CellState.ALIVE);
             }
         }
 
         gridToReturn.setCells(cells);
         return gridToReturn;
+    }
+
+    private boolean isOvercrowded(int totalOfNeighbors) {
+        return totalOfNeighbors > THREE;
+    }
+
+    private boolean isUnderpopulated(int totalOfNeighbors) {
+        return totalOfNeighbors < TWO;
     }
 
     void setAllNeighborhoodAsAlive() {
@@ -87,12 +97,6 @@ public class Grid {
 
     List<Cell> getCells() {
         return cells;
-    }
-
-    void setAsAlive(int cellIndex) {
-        Cell cell = this.getCellAtPosition(cellIndex);
-
-        cell.setState(CellState.ALIVE);
     }
 
     void setAsDead(int cellIndex) {
@@ -155,5 +159,16 @@ public class Grid {
 
     private Cell createCellAtPosition(int posX, int posY) {
         return new Cell(posX, posY);
+    }
+
+    public void setCellsAsAlive(int... cellIndexes) {
+        for (int i = 0; i < cellIndexes.length; i++) {
+            this.setACellAsAlive(cellIndexes[i]);
+        }
+    }
+
+    private void setACellAsAlive(int cellIndex) {
+        Cell cell = this.getCellAtPosition(cellIndex);
+        cell.setState(CellState.ALIVE);
     }
 }

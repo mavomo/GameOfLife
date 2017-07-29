@@ -51,9 +51,7 @@ public class CellTest {
     should_live_on_the_next_generation_when_a_live_cell_has_2_living_neighbors() {
         grid = startGame(3, 3);
 
-        grid.setAsAlive(0);
-        grid.setAsAlive(1);
-        grid.setAsAlive(3);
+        grid.setCellsAsAlive(0,1,3);
 
         Grid newGeneration = grid.computeNextGeneration(4, 4);
         Cell firstCellOfNewGen = newGeneration.getCellAtPosition(0);
@@ -67,9 +65,7 @@ public class CellTest {
         grid = startGame(3, 3);
 
         grid.setAsDead(0);
-        grid.setAsAlive(1);
-        grid.setAsAlive(3);
-        grid.setAsAlive(4);
+        grid.setCellsAsAlive(1,3,4);
 
         Grid newGeneration = grid.computeNextGeneration(4, 4);
         Cell firstCellOfNewGen = newGeneration.getCellAtPosition(0);

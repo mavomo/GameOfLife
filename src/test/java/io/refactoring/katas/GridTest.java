@@ -73,7 +73,7 @@ public class GridTest {
     }
 
     @Test
-    public void should_return_differents_posY_values_for_the_cells_given_a_grid_of_1x2() {
+    public void should_return_different_posY_values_for_the_cells_given_a_grid_of_1x2() {
         initializeAGridOf1x2();
 
         Cell firstCell = grid.getCellAtPosition(0);
@@ -83,7 +83,7 @@ public class GridTest {
     }
 
     @Test
-    public void should_return_differents_posX_values_for_the_cells_given_a_grid_of_2x1() {
+    public void should_return_different_posX_values_for_the_cells_given_a_grid_of_2x1() {
         initializeAGridOf2x1();
 
         Cell firstCell = grid.getCellAtPosition(0);
@@ -117,8 +117,7 @@ public class GridTest {
 
         Cell firstCell = grid.getCellAtPosition(0);
 
-        grid.setAsAlive(0);
-        grid.setAsAlive(1);
+        grid.setCellsAsAlive(0,1);
 
         assertThat(grid.countLivingNeighbors(grid.getCells(), firstCell)).isEqualTo(1);
     }
@@ -222,9 +221,7 @@ public class GridTest {
 
 
         grid.setAsDead(0);
-        grid.setAsAlive(1);
-        grid.setAsAlive(2);
-        grid.setAsAlive(3);
+        grid.setCellsAsAlive(1,2,3);
 
         Cell firstCellAsDead = grid.getCellAtPosition(0);
         assertThat(grid.countLivingNeighbors(grid.getCells(), firstCellAsDead)).isEqualTo(3);
@@ -234,7 +231,7 @@ public class GridTest {
     public void should_mark_the_first_cell_as_live_when_its_state_is_changed_to_ALIVE() {
         initializeAGridOf1x2();
 
-        grid.setAsAlive(0);
+        grid.setCellsAsAlive(0);
         assertThat(grid.getCellAtPosition(0).isAlive()).isTrue();
     }
 
@@ -243,8 +240,6 @@ public class GridTest {
         initializeAGridOf1x2();
 
         Cell firstCell = grid.getCellAtPosition(0);
-
-        grid.printCells();
 
         assertThat(grid.countLivingNeighbors(grid.getCells(), firstCell)).isEqualTo(0);
 
@@ -257,7 +252,6 @@ public class GridTest {
     private void initializeAGridOf2x1() {
         grid = startGame(2, 1);
     }
-
     private void initializeAGridOf2x2() {
         grid = startGame(2, 2);
     }
