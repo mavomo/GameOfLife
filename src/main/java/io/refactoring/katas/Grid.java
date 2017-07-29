@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Grid {
 
-    public static final int TWO = 2;
-    public static final int THREE = 3;
+    private static final int TWO = 2;
+    private static final int THREE = 3;
     private int height;
     private int width;
     private List<Cell> initialCells;
@@ -97,45 +97,65 @@ public class Grid {
     }
 
     private Cell[] getNeighborsOf(Cell currentCell) {
-        Cell cellOfTheRight = getNeighborhood(currentCell, Neighbor.RIGHT);
-        Cell cellToTheLeft = getNeighborhood(currentCell, Neighbor.LEFT);
-        Cell cellToTheTop = getNeighborhood(currentCell, Neighbor.TOP);
-        Cell cellInTheBottom = getNeighborhood(currentCell, Neighbor.BOTTOM);
-        Cell cellToTheTopRight = getNeighborhood(cellToTheTop, Neighbor.TOP_RIGHT);
-        Cell cellToTheTopLeft = getNeighborhood(cellToTheTop, Neighbor.TOP_LEFT);
-        Cell cellInTheBottomRight = getNeighborhood(cellInTheBottom, Neighbor.BOTTOM_RIGHT);
-        Cell cellInTheBottomLeft = getNeighborhood(cellInTheBottom, Neighbor.BOTTOM_LEFT);
+
+        Cell cellFromTheTop = getNeighborhood(currentCell, Neighbor.TOP);
+        Cell cellFromTheBottom = getNeighborhood(currentCell, Neighbor.BOTTOM);
 
         return new Cell[]{
-                cellOfTheRight,
-                cellToTheLeft,
-                cellToTheTop,
-                cellToTheTopRight,
-                cellToTheTopLeft,
-                cellInTheBottom,
-                cellInTheBottomLeft,
-                cellInTheBottomRight
+                getNeighborhood(currentCell, Neighbor.RIGHT),
+                getNeighborhood(currentCell, Neighbor.LEFT),
+                getNeighborhood(currentCell, Neighbor.TOP),
+                getNeighborhood(cellFromTheTop, Neighbor.TOP_RIGHT),
+                getNeighborhood(cellFromTheTop, Neighbor.TOP_LEFT),
+                getNeighborhood(currentCell, Neighbor.BOTTOM),
+                getNeighborhood(cellFromTheBottom, Neighbor.BOTTOM_LEFT),
+                getNeighborhood(cellFromTheBottom, Neighbor.BOTTOM_RIGHT)
         };
     }
 
     private Cell getNeighborhood(Cell currentCell, Neighbor neighborLocation) {
         Cell cell = new Cell(currentCell.getPositionX(), currentCell.getPositionY());
-        if (neighborLocation == Neighbor.RIGHT)
-            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() + 1);
-        if (neighborLocation == Neighbor.LEFT)
-            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() - 1);
-        if (neighborLocation == Neighbor.TOP)
-            cell.setLocation(currentCell.getPositionX() - 1, currentCell.getPositionY());
-        if (neighborLocation == Neighbor.BOTTOM)
-            cell.setLocation(currentCell.getPositionX() + 1, currentCell.getPositionY());
-        if (neighborLocation == Neighbor.TOP_RIGHT)
-            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() + 1);
-        if (neighborLocation == Neighbor.TOP_LEFT)
-            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() - 1);
-        if (neighborLocation == Neighbor.BOTTOM_RIGHT)
-            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() - 1);
-        if (neighborLocation == Neighbor.BOTTOM_LEFT)
-            cell.setLocation(currentCell.getPositionX(), currentCell.getPositionY() + 1);
+        int newPositionX;
+        int newPositionY;
+
+        switch (neighborLocation) {
+            case TOP:
+                newPositionX = currentCell.getPositionX() - 1;
+                newPositionY = currentCell.getPositionY();
+                break;
+            case TOP_RIGHT:
+                newPositionX = currentCell.getPositionX();
+                newPositionY = currentCell.getPositionY() + 1;
+                break;
+            case TOP_LEFT:
+                newPositionX = currentCell.getPositionX();
+                newPositionY = currentCell.getPositionY() - 1;
+                break;
+            case LEFT:
+                newPositionX = currentCell.getPositionX();
+                newPositionY = currentCell.getPositionY() - 1;
+                break;
+            case RIGHT:
+                newPositionX = currentCell.getPositionX();
+                newPositionY = currentCell.getPositionY() + 1;
+                break;
+            case BOTTOM:
+                newPositionX = currentCell.getPositionX() + 1;
+                newPositionY = currentCell.getPositionY();
+                break;
+            case BOTTOM_LEFT:
+                newPositionX = currentCell.getPositionX();
+                newPositionY = currentCell.getPositionY() + 1;
+                break;
+            case BOTTOM_RIGHT:
+                newPositionX = currentCell.getPositionX();
+                newPositionY = currentCell.getPositionY() - 1;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown position");
+        }
+        cell.setLocation(newPositionX, newPositionY);
+
         return cell;
     }
 
