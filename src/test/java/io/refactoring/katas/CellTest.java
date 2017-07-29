@@ -1,8 +1,10 @@
 package io.refactoring.katas;
 
+import io.refactoring.gol.Cell;
+import io.refactoring.gol.Grid;
 import org.junit.Test;
 
-import static io.refactoring.katas.Grid.startGame;
+import static io.refactoring.gol.Grid.createGrid;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CellTest {
@@ -12,7 +14,7 @@ public class CellTest {
     @Test
     public void
     should_die_by_underpopulation_when_a_live_cell_has_fewer_than_2_live_neighbors_in_a_2x2_grid() {
-        grid = startGame(2, 2);
+        grid = createGrid(2, 2);
 
         Grid newGrid = grid.computeNextGeneration(2, 2);
 
@@ -24,7 +26,7 @@ public class CellTest {
     @Test
     public void
     should_die_by_overcrowding_when_a_live_cell_has_more_than_3_neighbors_in_a_4x4_grid() {
-        grid = startGame(4, 4);
+        grid = createGrid(4, 4);
 
         grid.setAllNeighborhoodAsAlive();
 
@@ -37,7 +39,7 @@ public class CellTest {
     @Test
     public void
     should_live_on_the_next_generation_when_a_live_cell_has_3_living_neighbors() {
-        grid = startGame(4, 4);
+        grid = createGrid(4, 4);
         grid.setAllNeighborhoodAsAlive();
 
         Grid newGeneration = grid.computeNextGeneration(4, 4);
@@ -49,7 +51,7 @@ public class CellTest {
     @Test
     public void
     should_live_on_the_next_generation_when_a_live_cell_has_2_living_neighbors() {
-        grid = startGame(3, 3);
+        grid = createGrid(3, 3);
 
         grid.setCellsAsAlive(0,1,3);
 
@@ -62,7 +64,7 @@ public class CellTest {
     @Test
     public void
     should_live_on_the_next_generation_when_a_dead_cell_has_exactly_3_living_neighbors() {
-        grid = startGame(3, 3);
+        grid = createGrid(3, 3);
 
         grid.setAsDead(0);
         grid.setCellsAsAlive(1,3,4);

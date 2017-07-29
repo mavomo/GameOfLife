@@ -1,11 +1,13 @@
 package io.refactoring.katas;
 
+import io.refactoring.gol.Cell;
+import io.refactoring.gol.Grid;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static io.refactoring.katas.Grid.startGame;
+import static io.refactoring.gol.Grid.createGrid;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GridTest {
@@ -14,12 +16,12 @@ public class GridTest {
 
     @Before
     public void setUp() {
-        grid = startGame(1, 1);
+        grid = createGrid(1, 1);
     }
 
     @Test
     public void should_create_a_grid_given_as_the_height_and_a_width_as_parameters() {
-        grid = startGame(4, 8);
+        grid = createGrid(4, 8);
 
         assertThat(grid.getHeight()).isEqualTo(4);
         assertThat(grid.getWidth()).isEqualTo(8);
@@ -27,7 +29,7 @@ public class GridTest {
 
     @Test
     public void should_be_initialized_with_only_dead_cells_when_the_game_starts() {
-        grid = startGame(4, 8);
+        grid = createGrid(4, 8);
 
         assertThat(grid.getInitialCells()).isNotEmpty();
         assertThat(grid.getInitialCells()).allMatch(c -> !c.isAlive());
@@ -113,7 +115,7 @@ public class GridTest {
 
     @Test
     public void should_return_only_1_living_neighbor_to_the_right_when_counting_neighbors_of_the_living_first_cell_in_a_1x4_grid() {
-        grid = startGame(1, 4);
+        grid = createGrid(1, 4);
 
         Cell firstCell = grid.getCellAtPosition(0);
 
@@ -134,7 +136,7 @@ public class GridTest {
 
     @Test
     public void should_return_only_living_1_neighbor_in_the_bottom_when_counting_the_neighbors_of_the_first_cell_in_a_4x1_grid() {
-        grid = startGame(4, 1);
+        grid = createGrid(4, 1);
         grid.setAllNeighborhoodAsAlive();
 
         Cell firstCell = grid.getCellAtPosition(0);
@@ -143,7 +145,7 @@ public class GridTest {
 
     @Test
     public void should_return_3_living_neighbors_when_counting_the_neighbors_of_the_first_cell_in_a_2x2_grid() {
-        grid = startGame(2, 3);
+        grid = createGrid(2, 3);
 
         grid.setAllNeighborhoodAsAlive();
 
@@ -164,7 +166,7 @@ public class GridTest {
 
     @Test
     public void should_return_5_living_neighbors_when_counting_the_neighbors_of_the_second_cell_in_a_3x3_grid() {
-        grid = startGame(3, 3);
+        grid = createGrid(3, 3);
 
         Cell secondCell = grid.getCellAtPosition(1);
         grid.setAllNeighborhoodAsAlive();
@@ -246,17 +248,17 @@ public class GridTest {
     }
 
     private void initializeAGridOf3x4() {
-        grid = startGame(3, 4);
+        grid = createGrid(3, 4);
     }
 
     private void initializeAGridOf2x1() {
-        grid = startGame(2, 1);
+        grid = createGrid(2, 1);
     }
     private void initializeAGridOf2x2() {
-        grid = startGame(2, 2);
+        grid = createGrid(2, 2);
     }
 
     private void initializeAGridOf1x2() {
-        grid = startGame(1, 2);
+        grid = createGrid(1, 2);
     }
 }

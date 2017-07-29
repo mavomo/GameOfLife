@@ -1,15 +1,15 @@
-package io.refactoring.katas;
+package io.refactoring.gol;
 
 import java.util.Objects;
 
-import static io.refactoring.katas.CellState.DEAD;
+import static io.refactoring.gol.CellState.DEAD;
 
 public class Cell {
     private int positionX;
     private int positionY;
     private CellState state;
 
-    Cell(int positionX, int positionY) {
+    public Cell(int positionX, int positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
         state = DEAD;
@@ -19,11 +19,11 @@ public class Cell {
         this.state = state;
     }
 
-    int getPositionX() {
+    public int getPositionX() {
         return positionX;
     }
 
-    int getPositionY() {
+   public int getPositionY() {
         return positionY;
     }
 
@@ -35,13 +35,13 @@ public class Cell {
         this.positionY = positionY;
     }
 
-    void setLocation(int positionX, int positionY) {
+    public void setLocation(int positionX, int positionY) {
         this.setPositionX(positionX);
         this.setPositionY(positionY);
     }
 
 
-    boolean isAlive() {
+   public boolean isAlive() {
         return this.state.equals(CellState.ALIVE);
     }
 
