@@ -1,7 +1,5 @@
 package io.refactoring.gol;
 
-import io.refactoring.gol.neighbors.NeighborOrientation;
-import io.refactoring.gol.neighbors.NeighborType;
 import io.refactoring.gol.neighbors.Neighborhood;
 
 import java.util.ArrayList;
@@ -14,7 +12,6 @@ public class Grid {
     private int height;
     private int width;
     private List<Cell> initialCells;
-    private NeighborType neighborType;
 
     private Grid(int height, int width) {
         this.height = height;
@@ -52,11 +49,11 @@ public class Grid {
     }
 
     public int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
-        Cell[] cells = getNeighborsOf(currentCell);
+        Neighborhood neighborhood = getNeighborsOf(currentCell);
         int totalNeighbors = 0;
         for (Cell neighbor : allCells) {
             if (bothCellsAreAlive(currentCell, neighbor) || !currentCell.isAlive() && neighbor.isAlive()) {
-                for (Cell cell : cells) {
+                for (Cell cell : neighborhood.getNeighboors()) {
                     if (hasANeighbor(cell, neighbor)) {
                         totalNeighbors++;
                     }
@@ -100,29 +97,20 @@ public class Grid {
         return totalOfNeighbors < TWO;
     }
 
-    private Cell[] getNeighborsOf(Cell currentCell) {
+    private Neighborhood getNeighborsOf(Cell currentCell) {
         Neighborhood neighborhood = new Neighborhood();
+        neighborhood.setNeighborOnTheRight(currentCell);
+        neighborhood.setNeighborOnTheLeft(currentCell);
+        neighborhood.setNeighborOnTheTop(currentCell);
+        neighborhood.setNeighborAtTheBottom(currentCell);
+        neighborhood.setNeighborOnTheTopRight(currentCell);
+        neighborhood.setNeighborOnTheTopLeft(currentCell);
+        neighborhood.setNeighborAtTheBottomLeft(currentCell);
+        neighborhood.setNeighborAtTheBottomRight(currentCell);
 
-        neighborhood.neighboors[0] = getNeighborhood(currentCell, NeighborOrientation.RIGHT);
-        neighborhood.neighboors[1] = getNeighborhood(currentCell, NeighborOrientation.LEFT);
-        neighborhood.neighboors[2] = getNeighborhood(currentCell, NeighborOrientation.TOP);
-        neighborhood.neighboors[3] = getNeighborhood(currentCell, NeighborOrientation.BOTTOM);
-
-
-
-        neighborhood.neighboors[4] = getNeighborhood(neighborhood.neighboors[2], NeighborOrientation.TOP_RIGHT);
-        neighborhood.neighboors[5] = getNeighborhood(neighborhood.neighboors[2], NeighborOrientation.TOP_LEFT);
-        neighborhood.neighboors[6] = getNeighborhood(neighborhood.neighboors[3], NeighborOrientation.BOTTOM_LEFT);
-        neighborhood.neighboors[7] = getNeighborhood(neighborhood.neighboors[3], NeighborOrientation.BOTTOM_RIGHT);
-
-        return neighborhood.neighboors;
+        return neighborhood;
     }
-    
-    private Cell getNeighborhood(Cell currentCell, NeighborOrientation neighborOrientation) {
-        neighborType = NeighborType.create(neighborOrientation);
 
-        return neighborType.getNeighbor(currentCell);
-    }
 
     private void setInitialCells(List<Cell> initialCells) {
         this.initialCells = initialCells;
