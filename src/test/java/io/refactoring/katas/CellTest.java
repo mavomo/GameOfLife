@@ -28,7 +28,7 @@ public class CellTest {
     should_die_by_overcrowding_when_a_live_cell_has_more_than_3_neighbors_in_a_4x4_grid() {
         grid = createGrid(4, 4);
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         Grid newGeneration = grid.computeNextGeneration(4, 4);
         Cell fifthCellOfNewGen = newGeneration.getCellAtPosition(5);
@@ -40,7 +40,7 @@ public class CellTest {
     public void
     should_live_on_the_next_generation_when_a_live_cell_has_3_living_neighbors() {
         grid = createGrid(4, 4);
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         Grid newGeneration = grid.computeNextGeneration(4, 4);
         Cell firstCellOfNewGen = newGeneration.getCellAtPosition(0);

@@ -29,16 +29,8 @@ public class Cell {
         return positionX;
     }
 
-   public int getPositionY() {
+    public int getPositionY() {
         return positionY;
-    }
-
-    private void setPositionX(int positionX) {
-        this.positionX = positionX;
-    }
-
-    private void setPositionY(int positionY) {
-        this.positionY = positionY;
     }
 
     public void setLocation(int positionX, int positionY) {
@@ -46,25 +38,25 @@ public class Cell {
         this.setPositionY(positionY);
     }
 
-   public boolean isAlive() {
+    public boolean isAlive() {
         return this.state.equals(CellState.ALIVE);
     }
 
-
-     static boolean bothCellsAreAlive(Cell currentCell, Cell neighbor) {
+    static boolean bothCellsAreAlive(Cell currentCell, Cell neighbor) {
         return neighbor.isAlive() && currentCell.isAlive();
     }
 
 
-     static boolean deadCellHasALivingNeighbor(Cell currentCell, Cell neighbor) {
+    static boolean deadCellHasALivingNeighbor(Cell currentCell, Cell neighbor) {
         return !currentCell.isAlive() && neighbor.isAlive();
     }
 
 
-     static boolean hasANeighbor(Cell cellToTheLeft, Cell neighbor) {
+    static boolean hasANeighbor(Cell cellToTheLeft, Cell neighbor) {
         return neighbor.getPositionX() == cellToTheLeft.getPositionX()
                 && neighbor.getPositionY() == cellToTheLeft.getPositionY();
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -82,5 +74,18 @@ public class Cell {
 
     public void markAsAlive() {
         this.setState(ALIVE);
+    }
+
+    public void markAsDead() {
+        this.setState(DEAD);
+
+    }
+
+    private void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
+    private void setPositionY(int positionY) {
+        this.positionY = positionY;
     }
 }

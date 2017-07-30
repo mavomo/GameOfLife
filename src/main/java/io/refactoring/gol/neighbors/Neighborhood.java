@@ -16,6 +16,27 @@ public class Neighborhood {
     private NeighborType neighborType;
     private Cell[] neighboors = new Cell[8];
 
+    private Cell currenCell;
+
+    private Neighborhood(Cell currenCell) {
+        this.currenCell = currenCell;
+    }
+
+    public static Neighborhood create(Cell currentCell) {
+        Neighborhood neighborhood = new Neighborhood(currentCell);
+
+        neighborhood.setNeighborOnTheRight(currentCell);
+        neighborhood.setNeighborOnTheLeft(currentCell);
+        neighborhood.setNeighborOnTheTop(currentCell);
+        neighborhood.setNeighborAtTheBottom(currentCell);
+        neighborhood.setNeighborOnTheTopRight(currentCell);
+        neighborhood.setNeighborOnTheTopLeft(currentCell);
+        neighborhood.setNeighborAtTheBottomLeft(currentCell);
+        neighborhood.setNeighborAtTheBottomRight(currentCell);
+
+        return neighborhood;
+    }
+
     private Cell getNeighbor(Cell currentCell, NeighborOrientation neighborOrientation) {
         neighborType = NeighborType.create(neighborOrientation);
 

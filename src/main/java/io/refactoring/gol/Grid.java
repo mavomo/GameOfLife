@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grid {
-    private static final int TWO = 2;
-    private static final int THREE = 3;
+    private static final int MIN_NEIGHBOOR_TO_BEAR = 2;
+    private static final int MAX_NEIGHBOOR_TO_BEAR = 3;
 
     private int height;
     private int width;
@@ -33,10 +33,10 @@ public class Grid {
             int totalOfNeighbors = gridToReturn.countLivingNeighbors(newCells, currentCell);
 
             if (isUnderpopulated(totalOfNeighbors) || isOvercrowded(totalOfNeighbors)) {
-                currentCell.setState(CellState.DEAD);
+                currentCell.markAsDead();
             }
-            if (!currentCell.isAlive() && totalOfNeighbors == THREE) {
-                currentCell.setState(CellState.ALIVE);
+            if (!currentCell.isAlive() && totalOfNeighbors == MAX_NEIGHBOOR_TO_BEAR) {
+                currentCell.markAsAlive();
             }
         }
 
@@ -44,12 +44,8 @@ public class Grid {
         return gridToReturn;
     }
 
-    public void setAllNeighborhoodAsAlive() {
-        initialCells.stream().forEach(c -> c.setState(CellState.ALIVE));
-    }
-
     public int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
-        Neighborhood neighborhood = getNeighborsOf(currentCell);
+        Neighborhood neighborhood = Neighborhood.create(currentCell);
         int totalNeighbors = 0;
         for (Cell neighbor : allCells) {
             if (Cell.bothCellsAreAlive(currentCell, neighbor) || Cell.deadCellHasALivingNeighbor(currentCell, neighbor)) {
@@ -62,7 +58,24 @@ public class Grid {
         }
         return totalNeighbors;
     }
+/*
+    private Neighborhood getNeighborsOf(Cell currentCell) {
+        Neighborhood neighborhood = new Neighborhood();
+        neighborhood.setNeighborOnTheRight(currentCell);
+        neighborhood.setNeighborOnTheLeft(currentCell);
+        neighborhood.setNeighborOnTheTop(currentCell);
+        neighborhood.setNeighborAtTheBottom(currentCell);
+        neighborhood.setNeighborOnTheTopRight(currentCell);
+        neighborhood.setNeighborOnTheTopLeft(currentCell);
+        neighborhood.setNeighborAtTheBottomLeft(currentCell);
+        neighborhood.setNeighborAtTheBottomRight(currentCell);
 
+        return neighborhood;
+    }*/
+
+    public void markAllNeighborhoodAsAlive() {
+        initialCells.stream().forEach(c -> c.markAsAlive());
+    }
 
     public int getTotalCells() {
         return getInitialCells().size();
@@ -86,30 +99,16 @@ public class Grid {
 
     public void setAsDead(int cellIndex) {
         Cell cell = this.getCellAtPosition(cellIndex);
-        cell.setState(CellState.DEAD);
+        cell.markAsDead();
 
     }
 
     private boolean isOvercrowded(int totalOfNeighbors) {
-        return totalOfNeighbors > THREE;
+        return totalOfNeighbors > MAX_NEIGHBOOR_TO_BEAR;
     }
 
     private boolean isUnderpopulated(int totalOfNeighbors) {
-        return totalOfNeighbors < TWO;
-    }
-
-    private Neighborhood getNeighborsOf(Cell currentCell) {
-        Neighborhood neighborhood = new Neighborhood();
-        neighborhood.setNeighborOnTheRight(currentCell);
-        neighborhood.setNeighborOnTheLeft(currentCell);
-        neighborhood.setNeighborOnTheTop(currentCell);
-        neighborhood.setNeighborAtTheBottom(currentCell);
-        neighborhood.setNeighborOnTheTopRight(currentCell);
-        neighborhood.setNeighborOnTheTopLeft(currentCell);
-        neighborhood.setNeighborAtTheBottomLeft(currentCell);
-        neighborhood.setNeighborAtTheBottomRight(currentCell);
-
-        return neighborhood;
+        return totalOfNeighbors < MIN_NEIGHBOOR_TO_BEAR;
     }
 
 

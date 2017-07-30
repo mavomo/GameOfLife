@@ -108,7 +108,7 @@ public class GridTest {
 
         Cell firstCell = grid.getCellAtPosition(0);
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
     }
@@ -128,7 +128,7 @@ public class GridTest {
     public void should_return_only_1_living_neighbor_in_the_bottom_when_counting_the_neighbors_of_the_first_cell_in_a_2x1_grid() {
         initializeAGridOf2x1();
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         Cell firstCell = grid.getCellAtPosition(0);
         assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
@@ -137,7 +137,7 @@ public class GridTest {
     @Test
     public void should_return_only_living_1_neighbor_in_the_bottom_when_counting_the_neighbors_of_the_first_cell_in_a_4x1_grid() {
         grid = createGrid(4, 1);
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         Cell firstCell = grid.getCellAtPosition(0);
         assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
@@ -147,7 +147,7 @@ public class GridTest {
     public void should_return_3_living_neighbors_when_counting_the_neighbors_of_the_first_cell_in_a_2x2_grid() {
         grid = createGrid(2, 3);
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         Cell firstCell = grid.getCellAtPosition(0);
         assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(3);
@@ -158,7 +158,7 @@ public class GridTest {
     public void should_return_3_living_neighbors_when_counting_the_neighbors_of_the_second_living_cell_in_a_2x2_grid() {
         initializeAGridOf2x2();
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
         assertThat(grid.countLivingNeighbors(allCells, grid.getCellAtPosition(1))).isEqualTo(3);
@@ -169,7 +169,7 @@ public class GridTest {
         grid = createGrid(3, 3);
 
         Cell secondCell = grid.getCellAtPosition(1);
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
         assertThat(grid.countLivingNeighbors(allCells, secondCell)).isEqualTo(5);
@@ -179,7 +179,7 @@ public class GridTest {
     public void should_return_3_living_neighbors_when_counting_the_neighbors_of_the_third_cell_in_a_2x2_grid() {
         initializeAGridOf2x2();
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
         assertThat(grid.countLivingNeighbors(allCells, grid.getCellAtPosition(2))).isEqualTo(3);
@@ -189,7 +189,7 @@ public class GridTest {
     public void should_return_5_living_neighbors_when_counting_the_neighbors_of_the_third_cell_in_a_3x4_grid() {
         initializeAGridOf3x4();
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
         assertThat(grid.countLivingNeighbors(allCells, grid.getCellAtPosition(2))).isEqualTo(5);
@@ -201,7 +201,7 @@ public class GridTest {
 
         Cell fifth = grid.getCellAtPosition(5);
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
         assertThat(grid.countLivingNeighbors(allCells, fifth)).isEqualTo(8);
@@ -211,7 +211,7 @@ public class GridTest {
     public void should_return_3_living_neighbors_when_counting_the_neighbors_of_the_last_cell_in_a_3x4_grid() {
         initializeAGridOf3x4();
 
-        grid.setAllNeighborhoodAsAlive();
+        grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
         assertThat(grid.countLivingNeighbors(allCells, grid.getCellAtPosition(11))).isEqualTo(3);
