@@ -49,7 +49,7 @@ public class Grid {
         int totalNeighbors = 0;
         for (Cell neighbor : allCells) {
             if (Cell.bothCellsAreAlive(currentCell, neighbor) || Cell.deadCellHasALivingNeighbor(currentCell, neighbor)) {
-                for (Cell cell : neighborhood.getNeighboors()) {
+                for (Cell cell : neighborhood.getNeighbors()) {
                     if (Cell.hasANeighbor(cell, neighbor)) {
                         totalNeighbors++;
                     }
@@ -58,20 +58,6 @@ public class Grid {
         }
         return totalNeighbors;
     }
-/*
-    private Neighborhood getNeighborsOf(Cell currentCell) {
-        Neighborhood neighborhood = new Neighborhood();
-        neighborhood.setNeighborOnTheRight(currentCell);
-        neighborhood.setNeighborOnTheLeft(currentCell);
-        neighborhood.setNeighborOnTheTop(currentCell);
-        neighborhood.setNeighborAtTheBottom(currentCell);
-        neighborhood.setNeighborOnTheTopRight(currentCell);
-        neighborhood.setNeighborOnTheTopLeft(currentCell);
-        neighborhood.setNeighborAtTheBottomLeft(currentCell);
-        neighborhood.setNeighborAtTheBottomRight(currentCell);
-
-        return neighborhood;
-    }*/
 
     public void markAllNeighborhoodAsAlive() {
         initialCells.stream().forEach(c -> c.markAsAlive());

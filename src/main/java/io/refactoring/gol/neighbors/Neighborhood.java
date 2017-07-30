@@ -4,35 +4,27 @@ import io.refactoring.gol.Cell;
 
 public class Neighborhood {
 
-    private Cell neighborOnTheRight;
-    private Cell neighborOnTheLeft;
-    private Cell neighborOnTheTop;
-    private Cell neighborAtTheBottom;
-    private Cell neighborOnTheTopRight;
-    private Cell neighborOnTheTopLeft;
-    private Cell neighborAtTheBottomLeft;
-    private Cell neighborAtTheBottomRight;
 
     private NeighborType neighborType;
-    private Cell[] neighboors = new Cell[8];
+    private Cell currentCell;
+    private Neighbors neighbors;
 
-    private Cell currenCell;
+    private Neighborhood(Cell currentCell) {
+        this.currentCell = currentCell;
+        neighbors = new Neighbors();
 
-    private Neighborhood(Cell currenCell) {
-        this.currenCell = currenCell;
+        neighbors.setNeighborOnTheTop(getNeighborOnTheTop());
+        neighbors.setNeighborOnTheRight(getNeighborOnTheRight());
+        neighbors.setNeighborOnTheLeft(getNeighborOnTheLeft());
+        neighbors.setNeighborAtTheBottom(getNeighborAtTheBottom());
+        neighbors.setNeighborAtTheBottomLeft(getNeighborAtTheBottomLeft());
+        neighbors.setNeighborAtTheBottomRight(getNeighborAtTheBottomRight());
+        neighbors.setNeighborOnTheTopLeft(getNeighborOnTheTopLeft());
+        neighbors.setNeighborOnTheTopRight(getNeighborOnTheTopRight());
     }
 
     public static Neighborhood create(Cell currentCell) {
         Neighborhood neighborhood = new Neighborhood(currentCell);
-
-        neighborhood.setNeighborOnTheRight(currentCell);
-        neighborhood.setNeighborOnTheLeft(currentCell);
-        neighborhood.setNeighborOnTheTop(currentCell);
-        neighborhood.setNeighborAtTheBottom(currentCell);
-        neighborhood.setNeighborOnTheTopRight(currentCell);
-        neighborhood.setNeighborOnTheTopLeft(currentCell);
-        neighborhood.setNeighborAtTheBottomLeft(currentCell);
-        neighborhood.setNeighborAtTheBottomRight(currentCell);
 
         return neighborhood;
     }
@@ -43,84 +35,41 @@ public class Neighborhood {
         return neighborType.getNeighbor(currentCell);
     }
 
-    public Cell getNeighborOnTheRight() {
-        return neighborOnTheRight;
+    public Cell getNeighborOnTheTop() {
+        return getNeighbor(currentCell, NeighborOrientation.TOP);
     }
 
-    public void setNeighborOnTheRight(Cell currentCell) {
-        neighborOnTheRight = getNeighbor(currentCell, NeighborOrientation.RIGHT);
-        neighboors[0] = neighborOnTheRight;
+
+    public Cell getNeighborOnTheRight() {
+        return getNeighbor(this.currentCell, NeighborOrientation.RIGHT);
     }
 
     public Cell getNeighborOnTheLeft() {
-        return neighborOnTheLeft;
-    }
-
-    public void setNeighborOnTheLeft(Cell currentCell) {
-        neighborOnTheLeft = getNeighbor(currentCell, NeighborOrientation.LEFT);
-        neighboors[1] = neighborOnTheLeft;
-    }
-
-    public Cell getNeighborOnTheTop() {
-        return neighborOnTheTop;
-    }
-
-    public void setNeighborOnTheTop(Cell currentCell) {
-        neighborOnTheTop = getNeighbor(currentCell, NeighborOrientation.TOP);
-        neighboors[2] = neighborOnTheTop;
+        return getNeighbor(currentCell, NeighborOrientation.LEFT);
     }
 
     public Cell getNeighborAtTheBottom() {
-        return neighborAtTheBottom;
+        return getNeighbor(currentCell, NeighborOrientation.BOTTOM);
     }
 
-    public void setNeighborAtTheBottom(Cell currentCell) {
-        neighborAtTheBottom = getNeighbor(currentCell, NeighborOrientation.BOTTOM);
-        neighboors[3] = neighborAtTheBottom;
-    }
 
     public Cell getNeighborOnTheTopRight() {
-        return neighborOnTheTopRight;
-    }
-
-    public void setNeighborOnTheTopRight(Cell currentCell) {
-        currentCell = getNeighborOnTheTop();
-        neighborOnTheTopRight = getNeighbor(currentCell, NeighborOrientation.TOP_RIGHT);
-        neighboors[4] = neighborOnTheTopRight;
-
+        return getNeighbor(getNeighborOnTheTop(), NeighborOrientation.TOP_RIGHT);
     }
 
     public Cell getNeighborOnTheTopLeft() {
-        return neighborOnTheTopLeft;
-    }
-
-    public void setNeighborOnTheTopLeft(Cell currentCell) {
-        currentCell = getNeighborOnTheTop();
-        neighborOnTheTopLeft = getNeighbor(currentCell, NeighborOrientation.TOP_LEFT);
-        neighboors[5] = neighborOnTheTopLeft;
+        return getNeighbor(getNeighborOnTheTop(), NeighborOrientation.TOP_LEFT);
     }
 
     public Cell getNeighborAtTheBottomLeft() {
-        return neighborAtTheBottomLeft;
-    }
-
-    public void setNeighborAtTheBottomLeft(Cell currentCell) {
-        currentCell = getNeighborAtTheBottom();
-        neighborAtTheBottomLeft =  getNeighbor(currentCell, NeighborOrientation.BOTTOM_LEFT);
-        neighboors[6] = neighborAtTheBottomLeft;
+        return getNeighbor(getNeighborAtTheBottom(), NeighborOrientation.BOTTOM_LEFT);
     }
 
     public Cell getNeighborAtTheBottomRight() {
-        return neighborAtTheBottomRight;
+        return getNeighbor(getNeighborAtTheBottom(), NeighborOrientation.BOTTOM_RIGHT);
     }
 
-    public void setNeighborAtTheBottomRight(Cell currentCell) {
-        currentCell = getNeighborAtTheBottom();
-        neighborAtTheBottomRight = getNeighbor(currentCell, NeighborOrientation.BOTTOM_RIGHT);
-        neighboors[7] = neighborAtTheBottomRight;
-    }
-
-    public Cell[] getNeighboors() {
-        return neighboors;
+    public Cell[] getNeighbors() {
+        return neighbors.getNeighboors();
     }
 }
