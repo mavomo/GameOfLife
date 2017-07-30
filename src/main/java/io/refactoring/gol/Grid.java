@@ -2,6 +2,7 @@ package io.refactoring.gol;
 
 import io.refactoring.gol.neighbors.NeighborOrientation;
 import io.refactoring.gol.neighbors.NeighborType;
+import io.refactoring.gol.neighbors.Neighborhood;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,22 +101,23 @@ public class Grid {
     }
 
     private Cell[] getNeighborsOf(Cell currentCell) {
+        Neighborhood neighborhood = new Neighborhood();
 
-        Cell cellFromTheTop = getNeighborhood(currentCell, NeighborOrientation.TOP);
-        Cell cellFromTheBottom = getNeighborhood(currentCell, NeighborOrientation.BOTTOM);
+        neighborhood.neighboors[0] = getNeighborhood(currentCell, NeighborOrientation.RIGHT);
+        neighborhood.neighboors[1] = getNeighborhood(currentCell, NeighborOrientation.LEFT);
+        neighborhood.neighboors[2] = getNeighborhood(currentCell, NeighborOrientation.TOP);
+        neighborhood.neighboors[3] = getNeighborhood(currentCell, NeighborOrientation.BOTTOM);
 
-        return new Cell[]{
-                getNeighborhood(currentCell, NeighborOrientation.RIGHT),
-                getNeighborhood(currentCell, NeighborOrientation.LEFT),
-                getNeighborhood(currentCell, NeighborOrientation.TOP),
-                getNeighborhood(cellFromTheTop, NeighborOrientation.TOP_RIGHT),
-                getNeighborhood(cellFromTheTop, NeighborOrientation.TOP_LEFT),
-                getNeighborhood(currentCell, NeighborOrientation.BOTTOM),
-                getNeighborhood(cellFromTheBottom, NeighborOrientation.BOTTOM_LEFT),
-                getNeighborhood(cellFromTheBottom, NeighborOrientation.BOTTOM_RIGHT)
-        };
+
+
+        neighborhood.neighboors[4] = getNeighborhood(neighborhood.neighboors[2], NeighborOrientation.TOP_RIGHT);
+        neighborhood.neighboors[5] = getNeighborhood(neighborhood.neighboors[2], NeighborOrientation.TOP_LEFT);
+        neighborhood.neighboors[6] = getNeighborhood(neighborhood.neighboors[3], NeighborOrientation.BOTTOM_LEFT);
+        neighborhood.neighboors[7] = getNeighborhood(neighborhood.neighboors[3], NeighborOrientation.BOTTOM_RIGHT);
+
+        return neighborhood.neighboors;
     }
-
+    
     private Cell getNeighborhood(Cell currentCell, NeighborOrientation neighborOrientation) {
         neighborType = NeighborType.create(neighborOrientation);
 
