@@ -52,9 +52,9 @@ public class Grid {
         Neighborhood neighborhood = getNeighborsOf(currentCell);
         int totalNeighbors = 0;
         for (Cell neighbor : allCells) {
-            if (bothCellsAreAlive(currentCell, neighbor) || !currentCell.isAlive() && neighbor.isAlive()) {
+            if (Cell.bothCellsAreAlive(currentCell, neighbor) || Cell.deadCellHasALivingNeighbor(currentCell, neighbor)) {
                 for (Cell cell : neighborhood.getNeighboors()) {
-                    if (hasANeighbor(cell, neighbor)) {
+                    if (Cell.hasANeighbor(cell, neighbor)) {
                         totalNeighbors++;
                     }
                 }
@@ -62,6 +62,7 @@ public class Grid {
         }
         return totalNeighbors;
     }
+
 
     public int getTotalCells() {
         return getInitialCells().size();
@@ -120,34 +121,19 @@ public class Grid {
         List<Cell> cells = new ArrayList<>();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
-                Cell cellAtPosition = createCellAtPosition(i, j);
+                Cell cellAtPosition = Cell.createCellAtPosition(i, j);
                 cells.add(cellAtPosition);
             }
         }
         this.setInitialCells(cells);
     }
 
-    private boolean bothCellsAreAlive(Cell currentCell, Cell neighbor) {
-        return neighbor.isAlive() && currentCell.isAlive();
-    }
-
-    private boolean hasANeighbor(Cell cellToTheLeft, Cell neighbor) {
-        return neighbor.getPositionX() == cellToTheLeft.getPositionX()
-                && neighbor.getPositionY() == cellToTheLeft.getPositionY();
-    }
-
-    private Cell createCellAtPosition(int posX, int posY) {
-        return new Cell(posX, posY);
-    }
 
     public void setCellsAsAlive(int... cellIndexes) {
         for (int cellIndexe : cellIndexes) {
-            this.setACellAsAlive(cellIndexe);
+            Cell cell = this.getCellAtPosition(cellIndexe);
+            cell.markAsAlive();
         }
     }
 
-    private void setACellAsAlive(int cellIndex) {
-        Cell cell = this.getCellAtPosition(cellIndex);
-        cell.setState(CellState.ALIVE);
-    }
 }

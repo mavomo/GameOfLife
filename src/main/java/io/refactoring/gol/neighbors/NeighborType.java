@@ -36,7 +36,7 @@ public abstract class NeighborType {
     }
 
     public Cell getNeighbor(Cell currentCell) {
-        Cell cell = new Cell(currentCell.getPositionX(), currentCell.getPositionY());
+        Cell cell = Cell.createCellAtPosition(currentCell.getPositionX(), currentCell.getPositionY());
         cell.setLocation(getNewPositionX(currentCell), getNewPositionY(currentCell));
         return cell;
 

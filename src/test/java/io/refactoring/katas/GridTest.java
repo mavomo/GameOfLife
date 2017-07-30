@@ -38,7 +38,7 @@ public class GridTest {
 
     @Test
     public void should_contain_one_cell_given_1x1_grid() {
-        assertThat(grid.getInitialCells()).containsExactly(new Cell(0, 0));
+        assertThat(grid.getInitialCells()).containsExactly(Cell.createCellAtPosition(0, 0));
     }
 
     @Test
