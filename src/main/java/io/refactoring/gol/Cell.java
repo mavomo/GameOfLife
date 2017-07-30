@@ -1,5 +1,8 @@
 package io.refactoring.gol;
 
+import io.refactoring.gol.neighbors.Neighborhood;
+
+import java.util.List;
 import java.util.Objects;
 
 import static io.refactoring.gol.CellState.ALIVE;
@@ -47,16 +50,30 @@ public class Cell {
     }
 
 
-    static boolean deadCellHasALivingNeighbor(Cell currentCell, Cell neighbor) {
+   private static boolean deadCellHasALivingNeighbor(Cell currentCell, Cell neighbor) {
         return !currentCell.isAlive() && neighbor.isAlive();
     }
 
 
-    static boolean hasANeighbor(Cell cellToTheLeft, Cell neighbor) {
+    private static boolean hasANeighbor(Cell cellToTheLeft, Cell neighbor) {
         return neighbor.getPositionX() == cellToTheLeft.getPositionX()
                 && neighbor.getPositionY() == cellToTheLeft.getPositionY();
     }
 
+    public static int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
+        Neighborhood neighborhood = Neighborhood.create(currentCell);
+        int totalNeighbors = 0;
+        for (Cell neighbor : allCells) {
+            if (Cell.bothCellsAreAlive(currentCell, neighbor) || Cell.deadCellHasALivingNeighbor(currentCell, neighbor)) {
+                for (Cell cell : neighborhood.getNeighbors()) {
+                    if (Cell.hasANeighbor(cell, neighbor)) {
+                        totalNeighbors++;
+                    }
+                }
+            }
+        }
+        return totalNeighbors;
+    }
 
     @Override
     public boolean equals(Object o) {

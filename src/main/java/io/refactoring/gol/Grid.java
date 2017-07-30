@@ -1,7 +1,5 @@
 package io.refactoring.gol;
 
-import io.refactoring.gol.neighbors.Neighborhood;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class Grid {
         List<Cell> newCells = initialCells;
 
         for (Cell currentCell : newCells) {
-            int totalOfNeighbors = gridToReturn.countLivingNeighbors(newCells, currentCell);
+            int totalOfNeighbors = Cell.countLivingNeighbors(newCells, currentCell);
 
             if (isUnderpopulated(totalOfNeighbors) || isOvercrowded(totalOfNeighbors)) {
                 currentCell.markAsDead();
@@ -44,20 +42,6 @@ public class Grid {
         return gridToReturn;
     }
 
-    public int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
-        Neighborhood neighborhood = Neighborhood.create(currentCell);
-        int totalNeighbors = 0;
-        for (Cell neighbor : allCells) {
-            if (Cell.bothCellsAreAlive(currentCell, neighbor) || Cell.deadCellHasALivingNeighbor(currentCell, neighbor)) {
-                for (Cell cell : neighborhood.getNeighbors()) {
-                    if (Cell.hasANeighbor(cell, neighbor)) {
-                        totalNeighbors++;
-                    }
-                }
-            }
-        }
-        return totalNeighbors;
-    }
 
     public void markAllNeighborhoodAsAlive() {
         initialCells.stream().forEach(c -> c.markAsAlive());
@@ -112,7 +96,6 @@ public class Grid {
         }
         this.setInitialCells(cells);
     }
-
 
     public void setCellsAsAlive(int... cellIndexes) {
         for (int cellIndexe : cellIndexes) {

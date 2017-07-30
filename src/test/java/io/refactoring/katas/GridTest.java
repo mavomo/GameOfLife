@@ -99,7 +99,7 @@ public class GridTest {
 
         Cell firstCell = grid.getCellAtPosition(0);
 
-        assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(0);
+        assertThat(Cell.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(0);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class GridTest {
 
         grid.markAllNeighborhoodAsAlive();
 
-        assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
+        assertThat(Cell.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class GridTest {
 
         grid.setCellsAsAlive(0,1);
 
-        assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
+        assertThat(Cell.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         Cell firstCell = grid.getCellAtPosition(0);
-        assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
+        assertThat(Cell.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         Cell firstCell = grid.getCellAtPosition(0);
-        assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
+        assertThat(Cell.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(1);
     }
 
     @Test
@@ -150,7 +150,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         Cell firstCell = grid.getCellAtPosition(0);
-        assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(3);
+        assertThat(Cell.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(3);
     }
 
 
@@ -161,7 +161,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
-        assertThat(grid.countLivingNeighbors(allCells, grid.getCellAtPosition(1))).isEqualTo(3);
+        assertThat(Cell.countLivingNeighbors(allCells, grid.getCellAtPosition(1))).isEqualTo(3);
     }
 
     @Test
@@ -172,7 +172,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
-        assertThat(grid.countLivingNeighbors(allCells, secondCell)).isEqualTo(5);
+        assertThat(Cell.countLivingNeighbors(allCells, secondCell)).isEqualTo(5);
     }
 
     @Test
@@ -182,7 +182,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
-        assertThat(grid.countLivingNeighbors(allCells, grid.getCellAtPosition(2))).isEqualTo(3);
+        assertThat(Cell.countLivingNeighbors(allCells, grid.getCellAtPosition(2))).isEqualTo(3);
     }
 
     @Test
@@ -192,7 +192,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
-        assertThat(grid.countLivingNeighbors(allCells, grid.getCellAtPosition(2))).isEqualTo(5);
+        assertThat(Cell.countLivingNeighbors(allCells, grid.getCellAtPosition(2))).isEqualTo(5);
     }
 
     @Test
@@ -204,7 +204,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
-        assertThat(grid.countLivingNeighbors(allCells, fifth)).isEqualTo(8);
+        assertThat(Cell.countLivingNeighbors(allCells, fifth)).isEqualTo(8);
     }
 
     @Test
@@ -214,7 +214,7 @@ public class GridTest {
         grid.markAllNeighborhoodAsAlive();
 
         List<Cell> allCells = grid.getInitialCells();
-        assertThat(grid.countLivingNeighbors(allCells, grid.getCellAtPosition(11))).isEqualTo(3);
+        assertThat(Cell.countLivingNeighbors(allCells, grid.getCellAtPosition(11))).isEqualTo(3);
     }
 
     @Test
@@ -226,7 +226,7 @@ public class GridTest {
         grid.setCellsAsAlive(1,2,3);
 
         Cell firstCellAsDead = grid.getCellAtPosition(0);
-        assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCellAsDead)).isEqualTo(3);
+        assertThat(Cell.countLivingNeighbors(grid.getInitialCells(), firstCellAsDead)).isEqualTo(3);
     }
 
     @Test
@@ -243,7 +243,7 @@ public class GridTest {
 
         Cell firstCell = grid.getCellAtPosition(0);
 
-        assertThat(grid.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(0);
+        assertThat(Cell.countLivingNeighbors(grid.getInitialCells(), firstCell)).isEqualTo(0);
 
     }
 
