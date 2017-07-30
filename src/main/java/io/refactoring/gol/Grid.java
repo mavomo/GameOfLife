@@ -1,5 +1,7 @@
 package io.refactoring.gol;
 
+import io.refactoring.gol.neighbors.Neighborhood;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +26,11 @@ public class Grid {
     }
 
     public Grid computeNextGeneration(int width, int height) {
-        Grid gridToReturn = new Grid(width, height);
+        Grid newGrid = new Grid(width, height);
         List<Cell> newCells = initialCells;
 
         for (Cell currentCell : newCells) {
-            int totalOfNeighbors = Cell.countLivingNeighbors(newCells, currentCell);
+            int totalOfNeighbors = Neighborhood.countLivingNeighbors(newCells, currentCell);
 
             if (isUnderpopulated(totalOfNeighbors) || isOvercrowded(totalOfNeighbors)) {
                 currentCell.markAsDead();
@@ -38,8 +40,8 @@ public class Grid {
             }
         }
 
-        gridToReturn.setInitialCells(newCells);
-        return gridToReturn;
+        newGrid.setInitialCells(newCells);
+        return newGrid;
     }
 
 
@@ -70,7 +72,6 @@ public class Grid {
     public void setAsDead(int cellIndex) {
         Cell cell = this.getCellAtPosition(cellIndex);
         cell.markAsDead();
-
     }
 
     private boolean isOvercrowded(int totalOfNeighbors) {

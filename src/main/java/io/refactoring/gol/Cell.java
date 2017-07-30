@@ -1,8 +1,5 @@
 package io.refactoring.gol;
 
-import io.refactoring.gol.neighbors.Neighborhood;
-
-import java.util.List;
 import java.util.Objects;
 
 import static io.refactoring.gol.CellState.ALIVE;
@@ -18,14 +15,8 @@ public class Cell {
         this.positionY = positionY;
         state = DEAD;
     }
-
-
     public static Cell createCellAtPosition(int posX, int posY) {
         return new Cell(posX, posY);
-    }
-
-    void setState(CellState state) {
-        this.state = state;
     }
 
     public int getPositionX() {
@@ -45,35 +36,19 @@ public class Cell {
         return this.state.equals(CellState.ALIVE);
     }
 
-    static boolean bothCellsAreAlive(Cell currentCell, Cell neighbor) {
+    public static boolean bothCellsAreAlive(Cell currentCell, Cell neighbor) {
         return neighbor.isAlive() && currentCell.isAlive();
     }
 
-
-   private static boolean deadCellHasALivingNeighbor(Cell currentCell, Cell neighbor) {
+    public static boolean deadCellHasALivingNeighbor(Cell currentCell, Cell neighbor) {
         return !currentCell.isAlive() && neighbor.isAlive();
     }
 
-
-    private static boolean hasANeighbor(Cell cellToTheLeft, Cell neighbor) {
-        return neighbor.getPositionX() == cellToTheLeft.getPositionX()
-                && neighbor.getPositionY() == cellToTheLeft.getPositionY();
+    public static boolean hasANeighbor(Cell currentCell, Cell neighbor) {
+        return neighbor.getPositionX() == currentCell.getPositionX()
+                && neighbor.getPositionY() == currentCell.getPositionY();
     }
 
-    public static int countLivingNeighbors(List<Cell> allCells, final Cell currentCell) {
-        Neighborhood neighborhood = Neighborhood.create(currentCell);
-        int totalNeighbors = 0;
-        for (Cell neighbor : allCells) {
-            if (Cell.bothCellsAreAlive(currentCell, neighbor) || Cell.deadCellHasALivingNeighbor(currentCell, neighbor)) {
-                for (Cell cell : neighborhood.getNeighbors()) {
-                    if (Cell.hasANeighbor(cell, neighbor)) {
-                        totalNeighbors++;
-                    }
-                }
-            }
-        }
-        return totalNeighbors;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -96,6 +71,10 @@ public class Cell {
     public void markAsDead() {
         this.setState(DEAD);
 
+    }
+
+    private void setState(CellState state) {
+        this.state = state;
     }
 
     private void setPositionX(int positionX) {

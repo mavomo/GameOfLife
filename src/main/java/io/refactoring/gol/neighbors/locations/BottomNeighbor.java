@@ -4,6 +4,8 @@ import io.refactoring.gol.Cell;
 import io.refactoring.gol.neighbors.NeighborOrientation;
 import io.refactoring.gol.neighbors.NeighborType;
 
+import static io.refactoring.gol.neighbors.NeighborOrientation.BOTTOM;
+
 public class BottomNeighbor extends NeighborType {
 
     @Override
@@ -18,6 +20,6 @@ public class BottomNeighbor extends NeighborType {
 
     @Override
     public NeighborOrientation getNeighborPosition() {
-        return NeighborOrientation.BOTTOM;
+        return BOTTOM;
     }
 }
